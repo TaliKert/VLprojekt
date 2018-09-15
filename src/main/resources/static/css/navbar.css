@@ -1,0 +1,8 @@
+.navbar-brand {
+    font-family: "Courier New";
+}
+
+nav {
+    max-width: 1000px;
+    margin: auto;
+}
