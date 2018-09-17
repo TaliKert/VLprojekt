@@ -1,2 +1,2 @@
 # VLprojekt
-Magnar, Karl, Kert
+Karl, Magnar, Kert
