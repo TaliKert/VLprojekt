@@ -10,7 +10,9 @@
   
 #### *Running the project*
 
-  cd to project root
+  `git clone https://github.com/TaliKert/VLprojekt.git`
+  
+  `cd VLprojekt`
   
   `gradle build`
   
@@ -20,10 +22,11 @@
   
 #### *application.yml*
 
-  put this in `src/main/resources`
+  Fill out and put this in `src/main/resources`
   
   ```
   # SSL (not required)
+  # key must be in the same directory as the jar
   server:
     ssl:
       key-store-type: PKCS12
@@ -31,7 +34,7 @@
       key-store-password: [your key password]
       key-alias: tomcat
     
-  # Google OAuth
+  # Google OAuth (not required)
   security:
     oauth2:
       client:
