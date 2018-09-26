@@ -16,9 +16,7 @@
   
   `gradle build`
   
-  `cd /build/libs`
-  
-  `java -jar VLprojekt-0.0.1-SNAPSHOT.jar`
+  `java -jar /build/libs/VLprojekt-0.0.1-SNAPSHOT.jar`
   
 #### *application.yml*
 
