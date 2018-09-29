@@ -27,7 +27,7 @@ public class User {
 
     public User() { }
 
-    public User(String username, String password, String email, LocalDate registrationDate, String googleId) {
+    public User(String username, String email, LocalDate registrationDate, String googleId) {
         this.username = username;
         this.email = email;
         this.registrationDate = registrationDate;

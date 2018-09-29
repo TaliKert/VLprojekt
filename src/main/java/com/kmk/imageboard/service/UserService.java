@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Map;
 
 @Service
@@ -23,5 +24,16 @@ public class UserService {
             return null;
         }
         return user;
+    }
+
+    public void addUser(String username, Principal principal) {
+        Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
+        System.out.println(username);
+        User user = new User();
+        user.setRegistrationDate(LocalDate.now());
+        user.setGoogleId((String)details.get("id"));
+        user.setEmail((String)details.get("email"));
+        user.setUsername(username);
+        userRepository.save(user);
     }
 }
