@@ -26,7 +26,10 @@ public class IndexController {
     }
 
     @GetMapping("/register")
-    public String registerPrompt() {
+    public String registerPrompt(Principal principal) {
+        if (userService.getUser(principal) != null) {
+            return "redirect:/";
+        }
         return "register";
     }
 
