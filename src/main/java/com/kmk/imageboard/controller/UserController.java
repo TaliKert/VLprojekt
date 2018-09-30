@@ -1,17 +1,27 @@
 package com.kmk.imageboard.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.kmk.imageboard.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-@Controller
+@RestController
 public class UserController {
 
-    @RequestMapping("/user")
-    public @ResponseBody Principal user(Principal principal) {
-        return principal;
+    @Autowired
+    UserService userService;
+
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseEntity registerUser(@ModelAttribute("username") String username, Principal principal) {
+        if (userService.getUser(username) != null) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        userService.addUser(username, principal);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 }

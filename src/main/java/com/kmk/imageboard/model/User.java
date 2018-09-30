@@ -13,8 +13,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "email")
     private String email;
@@ -22,12 +22,16 @@ public class User {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
+    @Column(name = "google_id")
+    private String googleId;
+
     public User() { }
 
-    public User(String name, String email, LocalDate registrationDate) {
-        this.name = name;
+    public User(String username, String email, LocalDate registrationDate, String googleId) {
+        this.username = username;
         this.email = email;
         this.registrationDate = registrationDate;
+        this.googleId = googleId;
     }
 
     public long getId() {
@@ -38,12 +42,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -60,5 +64,13 @@ public class User {
 
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 }
