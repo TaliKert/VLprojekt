@@ -4,6 +4,8 @@ import com.kmk.imageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 
@@ -21,6 +23,17 @@ public class IndexController {
             }
         }
         return "index";
+    }
+
+    @GetMapping("/register")
+    public String registerPrompt() {
+        return "register";
+    }
+
+    @RequestMapping("/user")
+    public @ResponseBody
+    Principal user(Principal principal) {
+        return principal;
     }
 
 }
