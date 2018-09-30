@@ -20,20 +20,18 @@ public class UserService {
         Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
         String googleId = (String)details.get("sub");
         User user = userRepository.findByGoogleId(googleId);
-        if(user == null) {
-            return null;
-        }
         return user;
+    }
+
+    public User getUser(String username) {
+        return userRepository.findByUsername(username);
     }
 
     public boolean addUser(String username, Principal principal) {
         Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
-        if (userRepository.findByUsername(username) == null) {
-            return false;
-        }
         User user = new User();
         user.setRegistrationDate(LocalDate.now());
-        user.setGoogleId((String)details.get("id"));
+        user.setGoogleId((String)details.get("sub"));
         user.setEmail((String)details.get("email"));
         user.setUsername(username);
         userRepository.save(user);

@@ -16,10 +16,11 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<Object> registerUser(@ModelAttribute("username") String username, Principal principal) {
-        if (!userService.addUser(username, principal)) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+    public ResponseEntity registerUser(@ModelAttribute("username") String username, Principal principal) {
+        if (userService.getUser(username) != null) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
         }
+        userService.addUser(username, principal);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
