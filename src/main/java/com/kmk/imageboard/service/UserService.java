@@ -18,7 +18,7 @@ public class UserService {
 
     public User getUser(Principal principal) {
         Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
-        String googleId = (String)details.get("sub");
+        String googleId = (String)details.get("id");
         User user = userRepository.findByGoogleId(googleId);
         return user;
     }
