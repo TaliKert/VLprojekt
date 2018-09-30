@@ -26,14 +26,17 @@ public class UserService {
         return user;
     }
 
-    public void addUser(String username, Principal principal) {
+    public boolean addUser(String username, Principal principal) {
         Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
-        System.out.println(username);
+        if (userRepository.findByUsername(username) == null) {
+            return false;
+        }
         User user = new User();
         user.setRegistrationDate(LocalDate.now());
         user.setGoogleId((String)details.get("id"));
         user.setEmail((String)details.get("email"));
         user.setUsername(username);
         userRepository.save(user);
+        return true;
     }
 }

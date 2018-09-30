@@ -15,9 +15,12 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(@RequestBody String username, Principal principal) {
-        userService.addUser(username, principal);
-        return new ResponseEntity(HttpStatus.OK);
+    @ResponseBody
+    public ResponseEntity<Object> registerUser(@ModelAttribute("username") String username, Principal principal) {
+        if (!userService.addUser(username, principal)) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 }

@@ -8,4 +8,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /* Läbi selle interface'i on võimalik andmebaasiga suhelda */
 
     User findByGoogleId(String googleId);
+
+    User findByUsername(String username);
 }
