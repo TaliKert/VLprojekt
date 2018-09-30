@@ -29,12 +29,7 @@ public class UserService {
 
     public boolean addUser(String username, Principal principal) {
         Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
-        User user = new User();
-        user.setRegistrationDate(LocalDate.now());
-        user.setGoogleId((String)details.get("id"));
-        user.setEmail((String)details.get("email"));
-        user.setUsername(username);
-        userRepository.save(user);
+        userRepository.save(username, (String)details.get("email"), LocalDate.now(), (String)details.get("id"));
         return true;
     }
 }
