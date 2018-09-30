@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(nativeQuery = true, value = "INSERT INTO users (username, email, registration_date, google_id) " +
                                         "VALUES (:username, :email, :registrationDate, :googleId)")
-    User save(@Param("username") String username,
+    void save(@Param("username") String username,
               @Param("email") String email,
               @Param("registrationDate") LocalDate registrationDate,
               @Param("googleId") String googleId);
