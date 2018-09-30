@@ -1,7 +1,7 @@
 $(document).ready(function () {
-
+    $('#maku').hide();
     $("#test").on('click', function() {
-        $('#rakendus').toggle();
+        $('#maku').toggle();
     });
 
 });
