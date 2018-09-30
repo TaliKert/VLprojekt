@@ -43,7 +43,10 @@
         tokenName: oauth_token
         authenticationScheme: query
         clientAuthenticationScheme: form
-        scope: profile
+        scope: 
+          - profile
+          - email
+          - openID
       resource:
         userInfoUri: https://www.googleapis.com/userinfo/v2/me
         preferTokenInfo: false
