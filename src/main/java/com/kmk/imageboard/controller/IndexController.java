@@ -35,6 +35,11 @@ public class IndexController {
         return "register";
     }
 
+    @GetMapping("/map")
+    public String map() {
+        return "map";
+    }
+
     @RequestMapping("/user")
     public @ResponseBody
     Principal user(Principal principal) {
