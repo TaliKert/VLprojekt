@@ -6,7 +6,7 @@
         <div id="rakendus" class="navbar-header">
             <a class="navbar-brand" href="/">RAKENDUS</a>
         </div>
-        <a id="test" role="button" class="btn btn-outline-secondary">test</a>
+
         <div sec:authorize="isAuthenticated()">
             Hello there,
             <a href="/user" th:text="${username}"></a>
@@ -19,7 +19,5 @@
 
     </div>
 </nav>
-<div class="container-fluid">
-    <img th:src="@{/img/maku.jpg}" alt="magnar vares" id="maku">
-</div>
+
 </html>
