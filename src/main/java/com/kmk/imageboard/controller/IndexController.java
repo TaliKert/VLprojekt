@@ -1,6 +1,7 @@
 package com.kmk.imageboard.controller;
 
 import com.kmk.imageboard.service.UserService;
+import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +56,17 @@ public class IndexController {
             model.addAttribute("username", userService.getUser(principal).getUsername());
         }
         return "statistics";
+    }
+
+    @GetMapping("/upload")
+    public String upload(Model model, Principal principal) {
+        if (principal != null) {
+            if (userService.getUser(principal) == null) {
+                return "redirect:/register";
+            }
+            model.addAttribute("username", userService.getUser(principal).getUsername());
+        }
+        return "upload";
     }
 
     @RequestMapping("/user")
