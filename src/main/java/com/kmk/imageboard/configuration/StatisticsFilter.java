@@ -27,24 +27,28 @@ public class StatisticsFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         chain.doFilter(request, response);
         HttpServletRequest servletRequest = (HttpServletRequest) request;
+        try {
+            String sessionId = WebUtils.getCookie(servletRequest, "JSESSIONID").getValue();
 
-        String sessionId = WebUtils.getCookie(servletRequest, "JSESSIONID").getValue();
+            if (statisticRepository.findBySessionId(sessionId) == null) {
+                String header = servletRequest.getHeader("User-Agent");
+                UserAgent userAgent = UserAgent.parseUserAgentString(header);
 
-        if (statisticRepository.findBySessionId(sessionId) == null) {
-            String header = servletRequest.getHeader("User-Agent");
-            UserAgent userAgent = UserAgent.parseUserAgentString(header);
+                String browserName = userAgent.getBrowser().getName();
+                String osName = userAgent.getOperatingSystem().getName();
+                LocalTime time = LocalTime.now();
 
-            String browserName = userAgent.getBrowser().getName();
-            String osName = userAgent.getOperatingSystem().getName();
-            LocalTime time = LocalTime.now();
+                // For some reason, browsers send multiple requests at once
+                // and the previous if statement doesn't have enough time to
+                // query the database for existing Session ID's.
+                // TODO: make it so the following would be more elegant
+                try {
+                    statisticRepository.save(new RequestData(sessionId, browserName, osName, time));
+                } catch (DataIntegrityViolationException e) {
+                }
+            }
+        } catch (NullPointerException e) {
 
-            // For some reason, browsers send multiple requests at once
-            // and the previous if statement doesn't have enough time to
-            // query the database for existing Session ID's.
-            // TODO: make it so the following would be more elegant
-            try {
-                statisticRepository.save(new RequestData(sessionId, browserName, osName, time));
-            } catch (DataIntegrityViolationException e) { }
         }
 
     }

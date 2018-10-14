@@ -15,7 +15,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/login**", "/webjars/**", "/error**", "/css/**", "/js/**", "/img/**", "/map")
+                .antMatchers("/", "/login**", "/webjars/**", "/error**", "/css/**", "/js/**", "/img/**", "/map", "/statistics/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
