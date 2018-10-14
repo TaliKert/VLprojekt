@@ -35,8 +35,10 @@ dependencies {
     compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.0.5.RELEASE'
 
 
-
-
+    compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
+    
+//  Utility for parsing User-Agent
+    compile('eu.bitwalker:UserAgentUtils:1.21')
     //compile("org.springframework.security.oauth:spring-security-oauth2")
 
 //    compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure")

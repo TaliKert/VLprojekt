@@ -17,7 +17,7 @@ public class UserController {
     @PostMapping("/register")
     @ResponseBody
     public ResponseEntity registerUser(@ModelAttribute("username") String username, Principal principal) {
-        if (userService.getUser(username) != null) {
+        if (userService.getUser(username) != null || userService.getUser(principal) != null) {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
         userService.addUser(username, principal);

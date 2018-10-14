@@ -3,6 +3,7 @@ package com.kmk.imageboard.controller;
 import com.kmk.imageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,11 +17,12 @@ public class IndexController {
     UserService userService;
 
     @GetMapping("/")
-    public String index(Principal principal) {
+    public String index(Model model, Principal principal) {
         if (principal != null) {
             if (userService.getUser(principal) == null) {
                 return "redirect:/register";
             }
+            model.addAttribute("username", userService.getUser(principal).getUsername());
         }
         return "index";
     }

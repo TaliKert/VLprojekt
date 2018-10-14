@@ -1,7 +1,9 @@
-form {
-    margin: auto;
+#js-form {
+    display: none;
 }
-
-h2 {
-    margin: auto;
+#nojs-form {
+    display: block;
+}
+#error-msg {
+    display: none;
 }
