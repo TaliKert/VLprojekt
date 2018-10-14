@@ -46,6 +46,17 @@ public class IndexController {
         return "map";
     }
 
+    @GetMapping("/statistics")
+    public String statistics(Model model, Principal principal) {
+        if (principal != null) {
+            if (userService.getUser(principal) == null) {
+                return "redirect:/register";
+            }
+            model.addAttribute("username", userService.getUser(principal).getUsername());
+        }
+        return "statistics";
+    }
+
     @RequestMapping("/user")
     public @ResponseBody
     Principal user(Principal principal) {
