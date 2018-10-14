@@ -2,9 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org"
       lang="en">
 <head>
-    <th:block th:include="fragments/head"/>
+    <th:block th:include="fragments/head" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <script src="/js/index.js"></script>
 </head>
 <body>
+<th:block th:include="fragments/navbar" />
+<th:block th:include="fragments/footer" />
 
 <p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2202.8977752787514!2d26.
 713396479564956!3d58.378099306628954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46eb36e1900
