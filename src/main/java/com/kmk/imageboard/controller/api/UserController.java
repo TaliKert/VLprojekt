@@ -1,4 +1,4 @@
-package com.kmk.imageboard.controller;
+package com.kmk.imageboard.controller.api;
 
 import com.kmk.imageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
