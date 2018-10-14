@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       lang="en">
-<head th:include="fragments/head :: head"></head>
+<head th:include="fragments/head :: head">
+    <link rel="stylesheet" type="text/css" href="/css/register.css"/>
+</head>
 <body>
     <form class="form-horizontal" id="username-form" th:action="@{/register}" method="post">
         <h2>First time logging in? Please enter your desired username.</h2>
@@ -20,6 +22,5 @@
             </div>
         </div>
     </form>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 </body>
 </html>
