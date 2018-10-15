@@ -24,7 +24,7 @@ public class ImageService {
     UserService userService;
 
     public ResponseEntity<String> uploadImage(Principal principal, MultipartFile file) throws IOException {
-        if (!file.getContentType().equals("images/jpeg") || !file.getContentType().equals("images/png")) {
+        if (!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/png")) {
             return ResponseEntity.unprocessableEntity().body("Bad file type!");
         }
         Long uploaderId = userService.getUser(principal).getId();
