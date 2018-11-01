@@ -1,5 +1,6 @@
 package com.kmk.imageboard.controller;
 
+import com.kmk.imageboard.service.ImageService;
 import com.kmk.imageboard.service.UserService;
 import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class IndexController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ImageService imageService;
+
     @GetMapping("/")
     public String index(Model model, Principal principal) {
         if (principal != null) {
@@ -25,6 +29,7 @@ public class IndexController {
             }
             model.addAttribute("username", userService.getUser(principal).getUsername());
         }
+        model.addAttribute("thumbnails", imageService.getInitialThumbnailIds());
         return "index";
     }
 
@@ -67,6 +72,17 @@ public class IndexController {
             model.addAttribute("username", userService.getUser(principal).getUsername());
         }
         return "upload";
+    }
+
+    @GetMapping("/sitemap")
+    public String sitemap(Model model, Principal principal) {
+        if (principal != null) {
+            if (userService.getUser(principal) == null) {
+                return "redirect:/register";
+            }
+            model.addAttribute("username", userService.getUser(principal).getUsername());
+        }
+        return "sitemap";
     }
 
     @RequestMapping("/user")
