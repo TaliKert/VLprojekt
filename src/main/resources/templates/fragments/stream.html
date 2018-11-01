@@ -1,0 +1,7 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<a th:each="thumbnail : ${thumbnails}"
+   th:href="@{'/image/' + ${thumbnail.id}}">
+    <img th:src="@{'/thumb/' + ${thumbnail.id}}"
+         th:alt="${thumbnail.id}" />
+</a>
+</html>

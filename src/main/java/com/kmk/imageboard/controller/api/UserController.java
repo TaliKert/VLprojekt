@@ -1,5 +1,6 @@
 package com.kmk.imageboard.controller.api;
 
+import com.kmk.imageboard.service.EmailService;
 import com.kmk.imageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/register")
     @ResponseBody
