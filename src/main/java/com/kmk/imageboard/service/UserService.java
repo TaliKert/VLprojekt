@@ -14,6 +14,9 @@ import java.util.Map;
 public class UserService {
 
     @Autowired
+    EmailService emailService;
+
+    @Autowired
     UserRepository userRepository;
 
     public User getUser(Principal principal) {
@@ -30,6 +33,7 @@ public class UserService {
     public boolean addUser(String username, Principal principal) {
         Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
         userRepository.save(username, (String)details.get("email"), LocalDate.now(), (String)details.get("id"));
+        emailService.sendWelcomeEmail((String)details.get("email"), username);
         return true;
     }
 }

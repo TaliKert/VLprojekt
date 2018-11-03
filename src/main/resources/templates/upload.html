@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> <!-- xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" -->
+<head>
+    <th:block th:include="fragments/head" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <script src="/js/index.js"></script>
+</head>
+
+<body>
+<th:block th:include="fragments/navbar" />
+<th:block th:include="fragments/footer" />
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <form enctype="multipart/form-data" th:action="@{/upload}" th:method="POST">
+                <input id="image-file" type="file" name="file" />
+                <button type="submit"
+                        class="btn btn-primary btn-lg">Upload
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

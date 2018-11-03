@@ -23,7 +23,7 @@ public class StatisticService {
 
     public List<Integer> getTrafficByHour() {
         List<Integer> trafficList = new ArrayList<>();
-        for (int i = 0; i < 23; i++) {
+        for (int i = 0; i < 24; i++) {
             trafficList.add(statisticRepository.getRequestsByHour(i));
         }
         return trafficList;

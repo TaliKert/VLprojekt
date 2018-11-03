@@ -1,14 +1,18 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"> <!-- xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="fragments/head" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/stream.css"/>
     <script src="/js/index.js"></script>
+    <script src="/js/stream.js"></script>
 </head>
 
 <body>
-<th:block th:include="fragments/navbar" />
+<div id="toiletpaper">
+    <th:block th:include="fragments/navbar" />
+    <th:block th:include="fragments/stream" />
+</div>
 <th:block th:include="fragments/footer" />
 
 </body>
