@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -85,10 +86,19 @@ public class IndexController {
         return "sitemap";
     }
 
-    @RequestMapping("/user")
-    public @ResponseBody
-    Principal user(Principal principal) {
-        return principal;
+    @GetMapping("/u/{username}")
+    public String user(Model model, Principal principal, @PathVariable String username) {
+        if (principal != null) {
+            if (userService.getUser(principal) == null) {
+                return "redirect:/register";
+            }
+            model.addAttribute("username", userService.getUser(principal).getUsername());
+        }
+        if (userService.getUser(username) != null) {
+            model.addAttribute("whosePage", username);
+            model.addAttribute("uploadCount", imageService.getUserUploadCount(username));
+        }
+        return "user";
     }
 
 }

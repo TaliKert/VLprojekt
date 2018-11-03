@@ -14,4 +14,8 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query(nativeQuery = true,
             value = "SELECT * FROM images ORDER BY id DESC LIMIT 1")
     Image getFirstThumb();
+
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM images INNER JOIN users ON users.id = images.uploader_id WHERE username = :uname")
+    Integer getUploaderUploadCount(@Param("uname") String username);
+
 }

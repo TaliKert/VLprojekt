@@ -77,6 +77,10 @@ public class ImageService {
         return new ImageDTO(imageInfo.getId());
     }
 
+    public Integer getUserUploadCount(String username) {
+        return imageRepository.getUploaderUploadCount(username);
+    }
+
     private BufferedImage createImageFromBytes(byte[] imageData) {
         ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
         try {
@@ -85,4 +89,5 @@ public class ImageService {
             throw new RuntimeException(e);
         }
     }
+
 }
