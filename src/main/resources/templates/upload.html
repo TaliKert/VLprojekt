@@ -4,6 +4,7 @@
     <th:block th:include="fragments/head" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/help-tip.css"/>
     <script src="/js/index.js"></script>
 </head>
 
@@ -12,13 +13,18 @@
 <th:block th:include="fragments/footer" />
 <div class="container">
     <div class="row">
-        <div class="col-sm">
+        <div class="col-md-auto">
             <form enctype="multipart/form-data" th:action="@{/upload}" th:method="POST">
                 <input id="image-file" type="file" name="file" />
                 <button type="submit"
                         class="btn btn-primary btn-lg">Upload
                 </button>
             </form>
+        </div>
+        <div class="col-md">
+            <div class="help-tip">
+                <p>Your picture is uploaded to our database. How cool is that?</p>
+            </div>
         </div>
     </div>
 </div>
