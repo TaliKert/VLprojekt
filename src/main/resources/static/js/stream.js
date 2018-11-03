@@ -60,7 +60,6 @@ function refreshRows() {
     // console.log('breakpoint triggered, index ' + currentBreakPointIndex);
     $("span.thumbRow").contents().unwrap();
     var thumbContainers = $("#stream > .thumbcontainer");
-    console.log(thumbContainers);
     for (var i = 0; i < thumbContainers.length; i += thumbsPerRowArray[currentBreakPointIndex]) {
         thumbContainers.slice(
             i, i + thumbsPerRowArray[currentBreakPointIndex]
@@ -92,7 +91,6 @@ function connect() {
     var socket = new SockJS('/realtime');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/streamupdate', function (thumbData) {
             if (firstImageReached) {
                 thumbnails.unshift(JSON.parse(thumbData.body));

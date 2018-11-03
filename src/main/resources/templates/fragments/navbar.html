@@ -8,8 +8,7 @@
         </div>
 
         <div sec:authorize="isAuthenticated()">
-            Hello there,
-            <a th:href="@{'/u/' + ${username}}" th:text="${username}"></a>
+            <a id="uLink" th:href="@{'/u/' + ${username}}" th:text="${username}"></a>
             <a role="button" class="btn btn-success" href="/logout">Log out</a>
         </div>
         <div sec:authorize="isAnonymous()">

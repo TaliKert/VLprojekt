@@ -6,4 +6,17 @@
 }
 #error-msg {
     display: none;
+    font-weight: bold;
+    color: #721c24;
+}
+#form {
+    text-align: center;
+}
+form {
+    display: inline-block;
+    font-size: 2em;
+}
+.usernametextbox {
+    max-width: 40%;
+    margin: auto;
 }
