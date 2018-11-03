@@ -29,7 +29,7 @@ public class IndexController {
             }
             model.addAttribute("username", userService.getUser(principal).getUsername());
         }
-        model.addAttribute("thumbnails", imageService.getInitialThumbnailIds());
+//        model.addAttribute("thumbnails", imageService.getInitialThumbnailIds());
         return "index";
     }
 

@@ -40,11 +40,12 @@ public class ImageService {
 
 
         BufferedImage bufferedImage = createImageFromBytes(file.getBytes());
-        Scalr.Mode resizeEdge;
-        if (bufferedImage.getWidth() > bufferedImage.getHeight()) {
-            resizeEdge = Scalr.Mode.FIT_TO_HEIGHT;
-        } else resizeEdge = Scalr.Mode.FIT_TO_WIDTH;
-        BufferedImage thumbnailBufferedImage = Scalr.resize(bufferedImage, resizeEdge, 128, 128);
+        int edge = Math.min(bufferedImage.getWidth(), bufferedImage.getHeight());
+        BufferedImage thumbnailBufferedImage = Scalr.resize(
+                Scalr.crop(bufferedImage, (bufferedImage.getWidth() - edge) / 2, (bufferedImage.getHeight() - edge) / 2, edge, edge),
+                Scalr.Mode.AUTOMATIC,
+                128,
+                128);
         ImageIO.write(thumbnailBufferedImage, "jpg", new File("imagerepository" + File.separator + "thumbnails" + File.separator + newEntity.getId()));
         bufferedImage.flush();
         thumbnailBufferedImage.flush();
@@ -57,13 +58,23 @@ public class ImageService {
         }
     }
 
-    public List<ImageDTO> getInitialThumbnailIds() {
-        List<Image> imageList = imageRepository.findAll();
-        List<ImageDTO> idList = new ArrayList<>();
-        for (Image image : imageList) {
-            idList.add(new ImageDTO(image.getId()));
-        }
-        return idList;
+//    public List<ImageDTO> getInitialThumbnailIds() {
+//        List<Image> imageList = imageRepository.findAll();
+//        List<ImageDTO> idList = new ArrayList<>();
+//        for (Image image : imageList) {
+//            idList.add(new ImageDTO(image.getId()));
+//        }
+//        return idList;
+//    }
+
+    public ImageDTO getNextThumbnail(String id) {
+        Image imageInfo = imageRepository.getNextThumb(Integer.parseInt(id));
+        return new ImageDTO(imageInfo.getId());
+    }
+
+    public ImageDTO getNewestThumbnail() {
+        Image imageInfo = imageRepository.getFirstThumb();
+        return new ImageDTO(imageInfo.getId());
     }
 
     private BufferedImage createImageFromBytes(byte[] imageData) {
