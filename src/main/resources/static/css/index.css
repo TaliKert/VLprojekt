@@ -1,0 +1,40 @@
+#toiletpaper {
+    max-width: 1188px;
+    margin: auto;
+}
+
+@media screen and (max-width: 1300px) {
+    #toiletpaper {
+        max-width: 1056px
+    }
+}
+
+@media screen and (max-width: 1120px) {
+    #toiletpaper {
+        max-width: 924px
+    }
+}
+
+@media screen and (max-width: 980px) {
+    #toiletpaper {
+        max-width: 660px
+    }
+}
+
+@media screen and (max-width: 736px) {
+    #toiletpaper {
+        max-width: 660px
+    }
+}
+
+@media screen and (max-width: 690px) {
+    #toiletpaper {
+        max-width: 528px
+    }
+}
+
+@media screen and (max-width: 550px) {
+    #toiletpaper {
+        max-width: 396px
+    }
+}

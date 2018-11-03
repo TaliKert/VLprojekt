@@ -1,0 +1,10 @@
+#userInfo {
+    text-align: center;
+}
+p {
+    display: inline-block;
+    font-size: 5em;
+}
+.retrievedData {
+    font-weight: bold;
+}
