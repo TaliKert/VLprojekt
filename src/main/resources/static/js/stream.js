@@ -22,7 +22,8 @@ function addNewThumbnailBefore() { // adding to before is more expensive than ad
     refreshRows();
 }
 
-function addNewThumbnailAfter() {
+$.addNewThumbnailAfter = function () {
+    var dfd = $.Deferred();
 
     var lastRow = $("div span:last-child");
     if (lastRow.length === 0 || lastRow[0].childElementCount >= thumbsPerRowArray[currentBreakPointIndex]) {
@@ -33,28 +34,36 @@ function addNewThumbnailAfter() {
         '<a class="thumbcontainer" href="/image/' + thumbnails[thumbnails.length - 1].id + '">' +
         '<img src="' + '/thumb/' + thumbnails[thumbnails.length - 1].id + '" />' +
         '</a>'
-    )
+    );
 
-}
+    dfd.resolve();
+    return dfd;
+};
 
 function getThumbnailBefore(firstThumbId) {
     // TODO: implement
 }
 
-function getThumbnailAfter(lastThumbID) {
+$.getThumbnailAfter = function (lastThumbID) {
+    var dfd = $.Deferred();
     $.ajax({
         url: '/thumb/after/' + lastThumbID,
         type: 'get'
     }).done(function (thumbData, statusText, xhr) {
         if (xhr.status === 204) {
             lastImageReached = true;
+            dfd.resolve();
         } else {
             thumbnails.push(thumbData);
             window.lastThumbID = thumbData.id;
-            addNewThumbnailAfter();
+            $.addNewThumbnailAfter().done(function () {
+                dfd.resolve();
+            });
         }
-    })
-}
+    });
+
+    return dfd;
+};
 
 function refreshRows() {
     // console.log('breakpoint triggered, index ' + currentBreakPointIndex);
@@ -107,21 +116,28 @@ function disconnect() {
     }
 }
 
+function appendNewElementsUntilScreenFull() {
+    if ($(window).scrollTop() + $(window).height() + 200 > $("span.thumbRow:last").offset().top) {
+        if (lastImageReached) return;
+        $.getThumbnailAfter(lastThumbID).done(function () {
+            appendNewElementsUntilScreenFull()
+        });
+    }
+}
+
 $(document).ready(function () {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content')
         }
     });
-    // Placeholder, untill I get around making infinite scrolling
-    $("button.newimg").click(function () {
-        if (lastImageReached) return;
-        getThumbnailAfter(lastThumbID)
-    });
     connect();
-    window.currentBreakPointIndex = determineCurrentBreakPointIndex()
+    window.currentBreakPointIndex = determineCurrentBreakPointIndex();
 
-    window.onbeforeunload = function() {
+    window.onbeforeunload = function () {
         disconnect();
     };
+    $.getThumbnailAfter(lastThumbID).done(function () {
+        appendNewElementsUntilScreenFull();
+    });
 });
