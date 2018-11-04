@@ -1,21 +1,19 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="fragments/head" />
+    <th:block th:include="fragments/head"/>
     <link rel="stylesheet" type="text/css" href="/css/user.css"/>
 </head>
 
 <body>
 <div id="toiletpaper">
-    <th:block th:include="fragments/navbar" />
-
+    <th:block th:include="fragments/navbar"/>
+    <div id="userInfo">
+        <p><span class="retrievedData" th:text="#{user}" th:text="${whosePage}" th:text="#{hasUploaded}"></span>
+            <span class="retrievedData" th:text="${uploadCount}" th:text="#{images}"></span> </p>
+    </div>
 </div>
-<th:block th:include="fragments/footer" />
-<div id="userInfo">
-    <p> <span class="retrievedData"th:text="#{user}" th:text="${whosePage}" th:text="#{hasUploaded}"></span>
-         <span class="retrievedData" th:text="${uploadCount}" th:text="#{images}"></span> </p>
-</div>
-<th:block th:include="fragments/footer" />
+<th:block th:include="fragments/footer"/>
 
 
 </body>

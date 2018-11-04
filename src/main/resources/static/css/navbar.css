@@ -1,7 +1,14 @@
 .navbar-brand {
-    font-family: "Courier New";
+    font-family: "Courier New", serif;
 }
 
 nav {
     margin: auto;
+}
+
+#uLink {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 10px
 }

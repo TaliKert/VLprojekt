@@ -10,6 +10,7 @@ $(document).ready(function () {
     });
 
     $('#js-form').submit(function () {
+        $("input[type=submit]").attr("disabled", "disabled");
         document.getElementById('error-msg').style.display = 'none';
         $.ajax({
             url: '/register',
@@ -21,6 +22,7 @@ $(document).ready(function () {
                 },
                 409: function () {
                     document.getElementById('error-msg').style.display = 'block';
+                    $("input[type=submit]").removeAttr("disabled");
                 }
             }
         });

@@ -6,6 +6,7 @@ import com.kmk.imageboard.repository.ImageRepository;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +32,9 @@ public class ImageService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
     public ResponseEntity<String> uploadImage(Principal principal, MultipartFile file) throws IOException {
         if (!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/png")) {
             return ResponseEntity.unprocessableEntity().body("Bad file type!");
@@ -49,6 +53,8 @@ public class ImageService {
         ImageIO.write(thumbnailBufferedImage, "jpg", new File("imagerepository" + File.separator + "thumbnails" + File.separator + newEntity.getId()));
         bufferedImage.flush();
         thumbnailBufferedImage.flush();
+
+        messagingTemplate.convertAndSend("/topic/streamupdate", new ImageDTO(newEntity.getId()));
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -69,6 +75,9 @@ public class ImageService {
 
     public ImageDTO getNextThumbnail(String id) {
         Image imageInfo = imageRepository.getNextThumb(Integer.parseInt(id));
+        if (imageInfo == null) {
+            return null;
+        }
         return new ImageDTO(imageInfo.getId());
     }
 

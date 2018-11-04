@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"> <!-- xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" -->
 <head>
-    <th:block th:include="fragments/head" />
+    <th:block th:include="fragments/head"/>
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
             integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ="
@@ -11,24 +11,23 @@
 
 <body>
 <div id="toiletpaper">
-    <th:block th:include="fragments/navbar" />
-
-</div>
-<th:block th:include="fragments/footer" />
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <canvas id="browserChart" width="400" height="400"></canvas>
-        </div>
-        <div class="col-sm">
-            <canvas id="osChart" width="400" height="400"></canvas>
-        </div>
-        <div class="col-sm">
-            <canvas id="trafficChart" width="400" height="100"></canvas>
+    <th:block th:include="fragments/navbar"/>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <canvas id="browserChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-sm">
+                <canvas id="osChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-sm">
+                <canvas id="trafficChart" width="400" height="100"></canvas>
+            </div>
         </div>
     </div>
 </div>
+<th:block th:include="fragments/footer"/>
+
 
 </body>
 </html>

@@ -29,11 +29,16 @@ public class ImageController {
     }
 
     @GetMapping(value = "/thumb/after/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ImageDTO getThumbnailDataAfter(@PathVariable String id) {
+    public ImageDTO getThumbnailDataAfter(HttpServletResponse response, @PathVariable String id) {
         if (id.equals("undefined") || id.equals("null")) {
             return imageService.getNewestThumbnail();
         }
-        return imageService.getNextThumbnail(id);
+
+        ImageDTO nextThumbnail = imageService.getNextThumbnail(id);
+        if (nextThumbnail == null) {
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        }
+        return nextThumbnail;
     }
 
 
