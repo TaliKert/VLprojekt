@@ -123,7 +123,7 @@ $(document).ready(function () {
             data: {
                 labels: dataLabels,
                 datasets: [{
-                    label: $("#container").attr("statistics-graph-header"),
+                    label: $("#container").attr("class"),
                     data: trafficData,
                     borderColor: 'rgba(255, 159, 64, 1)',
                     borderWidth: 2
