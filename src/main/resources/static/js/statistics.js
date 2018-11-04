@@ -116,14 +116,14 @@ $(document).ready(function () {
             '05', '06', '07', '08', '09',
             '10', '11', '12', '13', '14',
             '15', '16', '17', '18', '19',
-            '20', '21', '22', '23']
+            '20', '21', '22', '23'];
         var ctx = document.getElementById("trafficChart").getContext('2d');
         var trafficLineChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: dataLabels,
                 datasets: [{
-                    label: '# of Requests per hour',
+                    label: $("#container").attr("statistics-graph-header"),
                     data: trafficData,
                     borderColor: 'rgba(255, 159, 64, 1)',
                     borderWidth: 2
