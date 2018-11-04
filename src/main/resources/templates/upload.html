@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html th:lang="#{language_code}" xmlns:th="http://www.thymeleaf.org"> <!-- xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" -->
+<html th:lang="#{language_code}" xmlns:th="http://www.thymeleaf.org">
+<!-- xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" -->
 <head>
     <th:block th:include="fragments/head"/>
 
@@ -16,18 +17,20 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                <form enctype="multipart/form-data" th:action="@{/upload}" th:method="POST" >
-                    <input id="image-file" type="file" name="file"/>
-                    <button type="submit"
-                            class="btn btn-primary btn-lg" th:text="#{upload}">
-                    </button>
+                <form enctype="multipart/form-data" th:action="@{/upload}" th:method="POST">
+                    <label th:text="#{uploadImg}"></label>
+                        <input id="image-file" type="file" name="file"/>
+                        <button type="submit"
+                                class="btn btn-primary btn-lg" th:text="#{upload}">
+                        </button>
+                        <div class="help-tip">
+                            <p th:text="#{helpUploadingPictures}"></p>
+                        </div>
                 </form>
             </div>
         </div>
         <div class="col-md">
-            <div class="help-tip">
-                <p th:text="#{helpUploadingPictures}"></p>
-            </div>
+
         </div>
     </div>
 </div>
