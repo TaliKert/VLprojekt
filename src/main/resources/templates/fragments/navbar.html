@@ -4,17 +4,30 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div id="rakendus" class="navbar-header">
-            <a class="navbar-brand" href="/">RAKENDUS</a>
+            <a class="navbar-brand" href="/" th:text="#{appName}"></a>
         </div>
 
-        <div sec:authorize="isAuthenticated()">
-            Hello there,
-            <a th:href="@{'/u/' + ${username}}" th:text="${username}"></a>
-            <a role="button" class="btn btn-success" href="/logout">Log out</a>
+        <div sec:authorize="isAuthenticated()"  >
+            <span th:text="#{hello}" th:remove="tag"></span>
+            <a  th:href="@{'/u/' + ${username}}" th:text="${username}"></a>
+            <a role="button" class="btn btn-success" href="/logout" th:text="#{logOut}"></a>
+
+
         </div>
         <div sec:authorize="isAnonymous()">
-            <a role="button" class="btn btn-outline-secondary" href="/login">login</a>
+            <a role="button" class="btn btn-outline-secondary" href="/login" th:text="#{login}"></a>
         </div>
+        <div class="dropdown">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" th:text="#{language}">
+                <div class="caret"> </div>
+            </button>
+
+            <ul id="language_dropdown" class="dropdown-menu">
+                <li><a href="?lang=en" rel="alternate" hreflang="en" >English</a></li>
+            <li><a href="?lang=ee" rel="alternate" hreflang="ee" >Eesti keel</a></li>
+        </ul>
+        </div>
+
 
     </div>
 </nav>

@@ -6,10 +6,14 @@
 </head>
 
 <body>
-<th:block th:include="fragments/navbar" />
+<div id="toiletpaper">
+    <th:block th:include="fragments/navbar" />
+
+</div>
+<th:block th:include="fragments/footer" />
 <div id="userInfo">
-    <p>User <span class="retrievedData" th:text="${whosePage}"></span> has
-        uploaded <span class="retrievedData" th:text="${uploadCount}"></span> images</p>
+    <p> <span class="retrievedData"th:text="#{user}" th:text="${whosePage}" th:text="#{hasUploaded}"></span>
+         <span class="retrievedData" th:text="${uploadCount}" th:text="#{images}"></span> </p>
 </div>
 <th:block th:include="fragments/footer" />
 

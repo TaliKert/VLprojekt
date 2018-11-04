@@ -1,15 +1,14 @@
-
-<html xmlns:th="http://www.thymeleaf.org" th:remove="tag">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <link rel="stylesheet" type="text/css" href="/css/navbar.css"/>
 
 <footer class="fixed-sidebar-left fixed-bottom">
     <div>
-        <a href="/">index</a>
-        <a href="/map">about</a>
-        <a href="/statistics">statistics</a>
-        <a href="/upload">upload</a>
-        <a href="/sitemap">sitemap</a>
+        <a href="/" th:text="#{homepage}"></a>
+        <a href="/map" th:text="#{about}"></a>
+        <a href="/statistics" th:text="#{statistics}"></a>
+        <a href="/upload" th:text="#{uploadFooter}"></a>
+        <a href="/sitemap" th:text="#{sitemap}"></a>
     </div>
 </footer>
 </html>

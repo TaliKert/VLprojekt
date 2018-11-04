@@ -4,11 +4,14 @@
     <th:block th:include="fragments/head" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
-    <script src="/js/index.js"></script>
+    <!-- <script src="/js/index.js"></script> -->
 </head>
 
 <body>
-<th:block th:include="fragments/navbar" />
+<div id="toiletpaper">
+    <th:block th:include="fragments/navbar" />
+
+</div>
 <th:block th:include="fragments/footer" />
 <div class="container">
     <div class="row">
@@ -16,7 +19,7 @@
             <form enctype="multipart/form-data" th:action="@{/upload}" th:method="POST">
                 <input id="image-file" type="file" name="file" />
                 <button type="submit"
-                        class="btn btn-primary btn-lg">Upload
+                        class="btn btn-primary btn-lg" th:text="#{upload}">
                 </button>
             </form>
         </div>
