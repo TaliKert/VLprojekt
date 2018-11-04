@@ -14,7 +14,28 @@
 
 
 <th:block th:include="fragments/footer" />
-
-
+<div class="container">
+    <div class="row">
+        <div class="col-xs-9 col-xs-offset-1">
+            <h1>Rakendus Site map</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            <a class="reference" th:href="@{/}">Main page</a>
+            <br>
+            <a class="reference" th:href="@{/register}">Registration page</a>
+            <br>
+            <a class="reference" th:href="@{/map}">About us page</a>
+            <br>
+            <a class="reference" th:href="@{/statistics}">Statistics page</a>
+            <br>
+            <a class="reference" th:href="@{/upload}">Upload page</a>
+            <br>
+            <a class="reference" th:href="@{/sitemap}">Site map page</a>
+            <br>
+        </div>
+    </div>
+</div>
 </body>
 </html>
