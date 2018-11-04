@@ -20,7 +20,7 @@ function addNewThumbnailBefore() { // adding to before is more expensive than ad
         '</a>'
     );
     refreshRows();
-}
+};
 
 $.addNewThumbnailAfter = function () {
     var dfd = $.Deferred();
@@ -30,11 +30,14 @@ $.addNewThumbnailAfter = function () {
         $('#stream').append("<span class='thumbRow'></span>");
         lastRow = $("div span:last-child");
     }
-    lastRow.append(
-        '<a class="thumbcontainer" href="/image/' + thumbnails[thumbnails.length - 1].id + '">' +
+    var containerelement = '<a class="thumbcontainer" href="/image/' + thumbnails[thumbnails.length - 1].id + '" onclick=>' +
         '<img src="' + '/thumb/' + thumbnails[thumbnails.length - 1].id + '" />' +
-        '</a>'
-    );
+        '</a>';
+    $(containerelement).appendTo(lastRow).click(function (e) {
+        e.preventDefault();
+        $('#template').attr('src', $(containerelement).attr("href")).css('display', 'inline-block');
+        history.pushState('', '', $(containerelement).attr("href"));
+    });
 
     dfd.resolve();
     return dfd;
@@ -140,4 +143,6 @@ $(document).ready(function () {
     $.getThumbnailAfter(lastThumbID).done(function () {
         appendNewElementsUntilScreenFull();
     });
+
+
 });

@@ -2,9 +2,18 @@
     max-width: 1188px;
     margin: auto;
 }
+
 .thumbcontainer {
     margin-left: 2px;
     margin-right: 2px;
+}
+img {
+    margin-bottom: 4px;
+}
+
+#template {
+    display: none;
+    max-width: 100%;
 }
 
 @media (max-width: 1300px) {
@@ -50,6 +59,7 @@
     img {
         width: 33%;
         height: 33%;
+        margin: 0;
     }
     .thumbcontainer {
         margin-left: 0;

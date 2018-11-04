@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 @RestController
 public class ImageController {
@@ -24,6 +21,13 @@ public class ImageController {
     @GetMapping("/thumb/{id}")
     public void getThumbnailImage(HttpServletResponse response, @PathVariable String id) throws IOException {
         InputStream in = new FileInputStream("imagerepository" + File.separator + "thumbnails" + File.separator + id);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        IOUtils.copy(in, response.getOutputStream());
+    }
+
+    @GetMapping("/image/{id}")
+    public void getFullImage(HttpServletResponse response, @PathVariable String id) throws IOException {
+        InputStream in = new FileInputStream("imagerepository" + File.separator + id);
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         IOUtils.copy(in, response.getOutputStream());
     }
