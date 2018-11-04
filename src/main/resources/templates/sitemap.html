@@ -3,6 +3,7 @@
 <head>
     <th:block th:include="fragments/head" />
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <title th:text="#{sitemap}"></title>
 </head>
 
 <body>
@@ -17,22 +18,22 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-9 col-xs-offset-1">
-            <h1>Rakendus Site map</h1>
+            <h1 th:text="#{sitemap}"></h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-2 col-md-offset-5">
-            <a class="reference" th:href="@{/}">Main page</a>
+            <a class="reference" th:href="@{/}" th:text="#{homepage}" ></a>
             <br>
-            <a class="reference" th:href="@{/register}">Registration page</a>
+            <a class="reference" th:href="@{/register}" th:text="#{registrationPage}"></a>
             <br>
-            <a class="reference" th:href="@{/map}">About us page</a>
+            <a class="reference" th:href="@{/map}" th:text="#{about}"></a>
             <br>
-            <a class="reference" th:href="@{/statistics}">Statistics page</a>
+            <a class="reference" th:href="@{/statistics}" th:text="#{statistics}"></a>
             <br>
-            <a class="reference" th:href="@{/upload}">Upload page</a>
+            <a class="reference" th:href="@{/upload}" th:text="#{uploadFooter}"></a>
             <br>
-            <a class="reference" th:href="@{/sitemap}">Site map page</a>
+            <a class="reference" th:href="@{/sitemap}" th:text="#{sitemap}"></a>
             <br>
         </div>
     </div>

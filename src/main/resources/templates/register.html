@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="/css/register.css"/>
     <link rel="stylesheet" type="text/css" href="/css/help-tip.css"/>
     <script src="/js/register.js"></script>
-
+    <title th:text="#{registrationPage}"></title>
 </head>
 <body>
 
@@ -27,7 +27,7 @@
                     class="btn btn-primary btn-lg" th:text="#{submit}">
             </button>
             <div class="help-tip">
-                <p>This will be the alias by which your fellow memers will recognize you!</p>
+                <p th:text="helpUsername"></p>
             </div>
         </div>
     </form>
