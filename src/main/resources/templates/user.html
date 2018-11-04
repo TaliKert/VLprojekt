@@ -6,11 +6,16 @@
 </head>
 
 <body>
-<div id="toiletpaper">
+<div id="toiletpaper">   <!-- th:text="#{user}"  th:text="#{hasUploaded}"   th:text="#{images}"> -->
     <th:block th:include="fragments/navbar"/>
     <div id="userInfo">
-        <p><span class="retrievedData" th:text="#{user}" th:text="${whosePage}" th:text="#{hasUploaded}"></span>
-            <span class="retrievedData" th:text="${uploadCount}" th:text="#{images}"></span> </p>
+        <p >
+            <span th:text="#{user}" th:remove="tag"></span>
+            <span class="retrievedData"  th:text="${whosePage}" ></span>
+            <span th:text="#{hasUploaded}" th:remove="tag" ></span>
+            <span class="retrievedData" th:text="${uploadCount}"> </span>
+            <span th:text="#{images}" th:remove="tag"></span>
+        </p>
     </div>
 </div>
 <th:block th:include="fragments/footer"/>

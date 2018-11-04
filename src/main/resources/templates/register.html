@@ -13,14 +13,14 @@
 <div id="form">
     <form class="form-horizontal" id="js-form" target="dummyframe">
         <div class="form-group form-group-lg">
-            <label class="col control-label">First time logging in? Please enter your desired username.</label>
+            <label class="col control-label" th:text="#{firstTimeLogin}" ></label>
             <div class="usernametextbox">
                 <input type="text" class="form-control" name="username"/>
             </div>
         </div>
 
         <div class="form-group">
-            <div id="error-msg">This name is already taken, try again!</div>
+            <div id="error-msg" th:text="#{nameTaken}"></div>
 
             <button type="submit"
                     class="btn btn-primary btn-lg" th:text="#{submit}">
