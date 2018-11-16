@@ -1,13 +1,15 @@
 package com.kmk.imageboard.service;
 
-import com.kmk.imageboard.model.DTO.ImageDTO;
+import com.kmk.imageboard.model.DTO.ImageInfoDTO;
 import com.kmk.imageboard.model.Image;
 import com.kmk.imageboard.repository.ImageRepository;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -20,8 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageService {
@@ -35,13 +36,16 @@ public class ImageService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+//    TODO refactor spaghetti
     public ResponseEntity<String> uploadImage(Principal principal, MultipartFile file) throws IOException {
         if (!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/png")) {
             return ResponseEntity.unprocessableEntity().body("Bad file type!");
         }
         Long uploaderId = userService.getUser(principal).getId();
-        Image newEntity = imageRepository.save(new Image(uploaderId));
+        String fileExtMIME = file.getContentType();
+        Image newEntity = imageRepository.save(new Image(uploaderId, fileExtMIME));
 
+        String fileExt = mimeTypeToExtension(fileExtMIME);
 
         BufferedImage bufferedImage = createImageFromBytes(file.getBytes());
         int edge = Math.min(bufferedImage.getWidth(), bufferedImage.getHeight());
@@ -54,36 +58,25 @@ public class ImageService {
         bufferedImage.flush();
         thumbnailBufferedImage.flush();
 
-        messagingTemplate.convertAndSend("/topic/streamupdate", new ImageDTO(newEntity.getId()));
+        messagingTemplate.convertAndSend("/topic/streamupdate", new ImageInfoDTO(newEntity.getId(), newEntity.getId() + fileExt));
 
         try (InputStream inputStream = file.getInputStream()) {
-
-            Files.copy(inputStream, Paths.get("imagerepository", String.valueOf(newEntity.getId())), StandardCopyOption.REPLACE_EXISTING);
-
+            Files.copy(inputStream, Paths.get("imagerepository", String.valueOf(newEntity.getId()) + fileExt), StandardCopyOption.REPLACE_EXISTING);
             return ResponseEntity.ok().body("Image uploaded!");
         }
     }
 
-//    public List<ImageDTO> getInitialThumbnailIds() {
-//        List<Image> imageList = imageRepository.findAll();
-//        List<ImageDTO> idList = new ArrayList<>();
-//        for (Image image : imageList) {
-//            idList.add(new ImageDTO(image.getId()));
-//        }
-//        return idList;
-//    }
-
-    public ImageDTO getNextThumbnail(String id) {
+    public ImageInfoDTO getNextThumbnail(String id) {
         Image imageInfo = imageRepository.getNextThumb(Integer.parseInt(id));
         if (imageInfo == null) {
             return null;
         }
-        return new ImageDTO(imageInfo.getId());
+        return new ImageInfoDTO(imageInfo.getId(), imageInfo.getId() + mimeTypeToExtension(imageInfo.getFileExtension()));
     }
 
-    public ImageDTO getNewestThumbnail() {
+    public ImageInfoDTO getNewestThumbnail() {
         Image imageInfo = imageRepository.getFirstThumb();
-        return new ImageDTO(imageInfo.getId());
+        return new ImageInfoDTO(imageInfo.getId(), imageInfo.getId() + mimeTypeToExtension(imageInfo.getFileExtension()));
     }
 
     public Integer getUserUploadCount(String username) {
@@ -99,4 +92,13 @@ public class ImageService {
         }
     }
 
+    public String getImageExtension(String id) {
+        Optional<Image> image = imageRepository.findById(Long.parseLong(id));
+        if (image.isPresent()) return image.get().getFileExtension();
+        else return null;
+    }
+
+    private String mimeTypeToExtension(String mime) {
+        return mime.equals("image/png") ? ".png" : ".jpg";
+    }
 }

@@ -50,6 +50,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'mysql:mysql-connector-java'
 
+//    failitüüpide tuvastamine MIME typest
+    compile 'org.apache.tika:tika-core:1.19.1'
 
 //    data push asjad
     compile("org.springframework.boot:spring-boot-starter-websocket")

@@ -13,11 +13,15 @@ public class Image {
     @Column(name = "uploader_id")
     private long uploaderId;
 
+    @Column(name = "file_ext")
+    private String fileExtension;
+
     public Image() {
     }
 
-    public Image(long uploaderId) {
+    public Image(long uploaderId, String fileExtension) {
         this.uploaderId = uploaderId;
+        this.fileExtension = fileExtension;
     }
 
     public long getId() {
@@ -34,5 +38,13 @@ public class Image {
 
     public void setUploaderId(long uploaderId) {
         this.uploaderId = uploaderId;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 }
