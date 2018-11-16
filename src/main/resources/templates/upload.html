@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-sm">
                 <form enctype="multipart/form-data" th:action="@{/upload}" th:method="POST">
-                    <label th:text="#{uploadImg}"></label>
+                    <label th:text="#{uploadImg}" for="image-file"></label>
                         <input id="image-file" type="file" name="file"/>
                         <button type="submit"
                                 class="btn btn-primary btn-lg" th:text="#{upload}">
