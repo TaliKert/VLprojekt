@@ -14,9 +14,7 @@
 
 
         </div>
-        <div sec:authorize="isAnonymous()">
-            <a role="button" class="btn btn-outline-secondary" href="/login" th:text="#{login}"></a>
-        </div>
+
         <div class="dropdown">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" th:text="#{language}">
                 <div class="caret"> </div>
@@ -24,8 +22,12 @@
 
             <ul id="language_dropdown" class="dropdown-menu">
                 <li><a href="?lang=en" rel="alternate" hreflang="en" >English</a></li>
-            <li><a href="?lang=ee" rel="alternate" hreflang="ee" >Eesti keel</a></li>
-        </ul>
+                <li><a href="?lang=ee" rel="alternate" hreflang="ee" >Eesti keel</a></li>
+            </ul>
+        </div>
+
+        <div sec:authorize="isAnonymous()">
+            <a role="button" class="btn btn-outline-secondary" href="/login" th:text="#{login}"></a>
         </div>
 
     </div>

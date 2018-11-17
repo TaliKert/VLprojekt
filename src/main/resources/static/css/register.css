@@ -11,10 +11,12 @@
 }
 #form {
     text-align: center;
+    color : #cccccc;
 }
 form {
     display: inline-block;
     font-size: 2em;
+    color : #cccccc;
 }
 .usernametextbox {
     max-width: 40%;
