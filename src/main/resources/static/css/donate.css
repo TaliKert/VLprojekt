@@ -1,0 +1,3 @@
+.transactionCanceled, .transactionSuccess {
+    display: none;
+}
