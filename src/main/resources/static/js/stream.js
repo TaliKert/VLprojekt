@@ -14,7 +14,10 @@ var stompClient = null;
 var activeImageElementId = null;
 
 var lastImageReached = false;
-var firstImageReached = true; // This is important, when we go to an URL with a specified image and the newer images are not loaded
+var firstImageReached = false; // This is important, when we go to an URL with a specified image and the newer images are not loaded
+
+var scrollUpdateInProgress = false;
+
 
 function addNewThumbnailBefore() { // adding to before is more expensive than adding after, something to fix
     $('#stream').prepend(
@@ -28,10 +31,10 @@ function addNewThumbnailBefore() { // adding to before is more expensive than ad
 $.addNewThumbnailAfter = function () {
     var dfd = $.Deferred();
 
-    var lastRow = $("div span:last-child");
+    var lastRow = $("div span.thumbRow").last();
     if (lastRow.length === 0 || lastRow[0].childElementCount >= thumbsPerRowArray[currentBreakPointIndex]) {
         $('#stream').append("<span class='thumbRow'></span>");
-        lastRow = $("div span:last-child");
+        lastRow = $("div span.thumbRow").last();
     }
     var thumbnailElement = '<a id="t' + thumbnails[thumbnails.length - 1].id + '" class="thumbcontainer" href="/image/' + thumbnails[thumbnails.length - 1].fileName + '" >' +
         '<img class="thumbImage" src="' + '/thumb/' + thumbnails[thumbnails.length - 1].id + '" />' +
@@ -78,6 +81,21 @@ $.getThumbnailAfter = function (lastThumbID) {
     return dfd;
 };
 
+$.getThumbnail = function (thumbID) {
+    var dfd = $.Deferred();
+    $.ajax({
+        url: '/thumb/exact/' + thumbID,
+        type: 'get'
+    }).done(function (thumbData, statusText, xhr) {
+        thumbnails.push(thumbData);
+        window.lastThumbID = thumbData.id;
+        $.addNewThumbnailAfter().done(function () {
+            dfd.resolve();
+        });
+    });
+    return dfd;
+};
+
 function refreshRows() {
     // console.log('breakpoint triggered, index ' + currentBreakPointIndex);
     $("span.thumbRow").contents().unwrap();
@@ -98,6 +116,9 @@ function refreshContainerPosition(target) {
         .css('display', 'inline-block');
     $('#itemContainer > img')
         .attr('src', target.pathname);
+    // $('html, body').animate({
+    //     scrollTop: $("#itemContainer").offset().top - 58
+    // },1000);
 }
 
 function determineCurrentBreakPointIndex() {
@@ -143,12 +164,18 @@ function disconnect() {
     }
 }
 
-function appendNewElementsUntilScreenFull() { // TODO FIXFIXFIX
+function appendNewElementsUntilScreenFull() {
+    scrollUpdateInProgress = true;
     if ($(window).scrollTop() + $(window).height() + 200 > $("span.thumbRow:last").offset().top) {
-        if (lastImageReached) return;
+        if (lastImageReached) {
+            scrollUpdateInProgress = false;
+            return;
+        }
         $.getThumbnailAfter(lastThumbID).done(function () {
             appendNewElementsUntilScreenFull()
         });
+    } else {
+        scrollUpdateInProgress = false;
     }
 }
 
@@ -158,15 +185,30 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content')
         }
     });
-    connect();
-    window.currentBreakPointIndex = determineCurrentBreakPointIndex();
 
+    connect();
     window.onbeforeunload = function () {
         disconnect();
     };
+
+    window.currentBreakPointIndex = determineCurrentBreakPointIndex();
+
+    if (window.location.pathname.split("/").slice(-1)[0] !== "") {
+        window.lastThumbID = window.location.pathname.split("/").slice(-1)[0];
+        window.activeImageElementId = "t" + window.lastThumbID;
+        $.getThumbnail(window.lastThumbID).done(function () {
+            refreshContainerPosition(document.getElementById(activeImageElementId));
+        })
+    }
+
     $.getThumbnailAfter(lastThumbID).done(function () {
         appendNewElementsUntilScreenFull();
     });
+
+    $(window).scroll(function () {
+        if (scrollUpdateInProgress) return;
+        else appendNewElementsUntilScreenFull();
+    })
 
 
 });

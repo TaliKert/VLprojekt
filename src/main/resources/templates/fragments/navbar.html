@@ -1,31 +1,36 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:remove="tag">
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar fixed-top navbar-expand-md">
     <div class="container-fluid">
         <div id="rakendus" class="navbar-header">
             <a class="navbar-brand" href="/" th:text="#{appName}"></a>
         </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">◀</span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{'/u/' + ${username}}" th:text="${username}"></a>
+                </li>
+                <li class="nav-item">
+                        <a sec:authorize="isAuthenticated()" role="button" class="btn btn-block btn-outline-warning nav-link" href="/logout" th:text="#{logOut}"></a>
+                        <a sec:authorize="isAnonymous()" role="button" class="btn btn-block btn-info nav-link" href="/login" th:text="#{login}"></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <div class="dropdown d-flex h-100">
+                        <button type="button" class="btn btn-block btn-sm dropdown-toggle" data-toggle="dropdown"
+                                th:text="#{language}">
+                        </button>
 
-        <div sec:authorize="isAuthenticated()"  >
-            <span th:text="#{hello}" th:remove="tag"></span>
-            <a  th:href="@{'/u/' + ${username}}" th:text="${username}"></a>
-            <a role="button" class="btn btn-success" href="/logout" th:text="#{logOut}"></a>
-
-
-        </div>
-        <div sec:authorize="isAnonymous()">
-            <a role="button" class="btn btn-outline-secondary" href="/login" th:text="#{login}"></a>
-        </div>
-        <div class="dropdown">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" th:text="#{language}">
-                <div class="caret"> </div>
-            </button>
-
-            <ul id="language_dropdown" class="dropdown-menu">
-                <li><a href="?lang=en" rel="alternate" hreflang="en" >English</a></li>
-            <li><a href="?lang=ee" rel="alternate" hreflang="ee" >Eesti keel</a></li>
-        </ul>
+                        <ul id="language_dropdown" class="dropdown-menu">
+                            <li><a href="?lang=en" rel="alternate" hreflang="en">English</a></li>
+                            <li><a href="?lang=ee" rel="alternate" hreflang="ee">Eesti</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
         </div>
 
     </div>

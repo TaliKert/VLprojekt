@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html th:lang="#{language_code}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="fragments/head"/>
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <title th:text="404"></title>
+</head>
+
+<body>
+<div id="toiletpaper">
+    <th:block th:include="fragments/navbar"/>
+    <span class="display-4" th:text="#{entryNotFound}"></span>
+</div>
+<th:block th:include="fragments/footer"/>
+
+
+</body>
+</html>

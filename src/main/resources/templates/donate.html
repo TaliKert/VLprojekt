@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html th:lang="#{language_code}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="fragments/head"/>
+    <link rel="stylesheet" type="text/css" href="/css/user.css"/>
+    <title th:text="#{donate}"></title>
+</head>
+
+<body>
+
+<input type="hidden" name="VK_SERVICE" value="1011" />
+<input type="hidden" name="VK_VERSION" value="008" />
+<input type="hidden" name="VK_SND_ID" value="uid26" />
+<input type="hidden" name="VK_STAMP" value="12345" />
+<input type="hidden" name="VK_AMOUNT" value="150" />
+<input type="hidden" name="VK_CURR" value="EUR" />
+<input type="hidden" name="VK_ACC" value="EE871600161234567892" />
+<input type="hidden" name="VK_NAME" value="SA KMK" />
+<input type="hidden" name="VK_REF" value="1234561" />
+<input type="hidden" name="VK_LANG" value="EST" />
+<input type="hidden" name="VK_MSG" value="Torso Tiger" />
+<input type="hidden" name="VK_RETURN" value="http://localhost/project/5bf18cd41ddfed3fca065c45?payment_action=success" />
+<input type="hidden" name="VK_CANCEL" value="http://localhost/project/5bf18cd41ddfed3fca065c45?payment_action=cancel" />
+<input type="hidden" name="VK_DATETIME" value="2018-11-18T16:01:44+0000" />
+<input type="hidden" name="VK_ENCODING" value="utf-8" />
+<input type="hidden" name="VK_MAC" value="TvApjcOZaYgxeKkbHM4q4ZjRIsGabAHff31mdNi74kozEJGx83m8ulfcjSZuP2AbCEyF7cEC9h44AFyP71kAmbzgik8BICcm8+l7SjCPGJpil3M6B/kXHpEKlKFbz5ipymWv7xegr1R5NSDeW7Jt0aekSqumEMp6v/p4zZ69aIMc3jSrTualvXhxASFF3In+VljZzh7gSyAgYDe5IrX1bkKEoPLohZC/SMQuWemkik6WT1wWk52Zw0ZEnI63UGl+7Hum+9waFpKa3EwNPnfRHMbdVWL6CLl6b5O6lyv8iJbVO6G/4hGNrw2lgjMAGx1Nd0jrNTKfhqQ4/pjQQNxcBA==" />
+
+
+<div id="toiletpaper">
+    <th:block th:include="fragments/navbar"/>
+    <div class="jumbotron jumbotron-fluid">
+        <form method="post" action="http://localhost/banklink/ipizza">
+            <div class="row">
+                <div class="col">
+                    <label class="display-4" th:text="#{donateText}" for="donation-amount"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input id="donation-amount" type="number" name="donation-amount"/>
+                </div>
+                <div class="col d-flex justify-content-end">
+                    <button type="submit"
+                            class="btn btn-primary btn-lg" th:text="#{toBank}">
+                    </button>
+                    <div class="help-tip">
+                        <p th:text="#{helpDonate}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <span class="transactionCanceled" th:text="#{transactionCancel}"></span>
+                    <span class="transactionSuccess" th:text="#{transactionSuccess}"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<th:block th:include="fragments/footer"/>
+
+
+</body>
+</html>

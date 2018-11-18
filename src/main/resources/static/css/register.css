@@ -9,14 +9,17 @@
     font-weight: bold;
     color: #721c24;
 }
-#form {
-    text-align: center;
-}
+/*#form {*/
+    /*text-align: center;*/
+/*}*/
 form {
+    text-align: center;
     display: inline-block;
     font-size: 2em;
 }
+#username {
+    max-width: 15em;
+}
 .usernametextbox {
-    max-width: 40%;
-    margin: auto;
+    align-content: center;
 }

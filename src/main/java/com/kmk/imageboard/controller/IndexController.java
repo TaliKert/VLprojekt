@@ -2,6 +2,7 @@ package com.kmk.imageboard.controller;
 
 import com.kmk.imageboard.service.ImageService;
 import com.kmk.imageboard.service.UserService;
+import org.bouncycastle.jcajce.provider.asymmetric.RSA;
 import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,8 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.security.rsa.RSAPadding;
+import sun.security.ssl.RSASignature;
 
 import java.security.Principal;
+import java.security.Signature;
 
 @Controller
 public class IndexController {
@@ -30,7 +34,18 @@ public class IndexController {
             }
             model.addAttribute("username", userService.getUser(principal).getUsername());
         }
-//        model.addAttribute("thumbnails", imageService.getInitialThumbnailIds());
+        return "index";
+    }
+
+    @GetMapping("/entry/{id}")
+    public String indexWithSpecifiedEntry(Model model, Principal principal, @PathVariable String id) {
+        if (principal != null) {
+            if (userService.getUser(principal) == null) {
+                return "redirect:/register";
+            }
+            model.addAttribute("username", userService.getUser(principal).getUsername());
+        }
+        if (!imageService.imageExists(Long.parseLong(id))) return "entrynotfound";
         return "index";
     }
 
@@ -101,4 +116,14 @@ public class IndexController {
         return "user";
     }
 
+    @GetMapping("/donate")
+    public String donate(Model model, Principal principal) {
+        if (principal != null) {
+            if (userService.getUser(principal) == null) {
+                return "redirect:/register";
+            }
+            model.addAttribute("username", userService.getUser(principal).getUsername());
+        }
+        return null;
+    }
 }
