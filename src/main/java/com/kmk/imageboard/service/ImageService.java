@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -53,7 +54,12 @@ public class ImageService {
                 Scalr.Mode.AUTOMATIC,
                 128,
                 128);
-        ImageIO.write(thumbnailBufferedImage, "jpg", new File("imagerepository" + File.separator + "thumbnails" + File.separator + newEntity.getId()));
+        try {
+            ImageIO.write(thumbnailBufferedImage, "jpg", new File("imagerepository" + File.separator + "thumbnails" + File.separator + newEntity.getId()));
+        } catch (IIOException e) {
+            imageRepository.delete(newEntity);
+            throw e;
+        }
         bufferedImage.flush();
         thumbnailBufferedImage.flush();
 
