@@ -7,6 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
+    @Query(nativeQuery = true, value = "SELECT * FROM images WHERE id = :thumbID")
+    Image getThumbnail(@Param("thumbID") Integer id);
+
     @Query(nativeQuery = true,
             value = "SELECT * FROM images WHERE id = (SELECT MAX(id) FROM images WHERE id < :thumbID)")
     Image getNextThumb(@Param("thumbID") Integer id);

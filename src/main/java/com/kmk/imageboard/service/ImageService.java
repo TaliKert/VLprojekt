@@ -5,13 +5,13 @@ import com.kmk.imageboard.model.Image;
 import com.kmk.imageboard.repository.ImageRepository;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -39,7 +39,7 @@ public class ImageService {
 //    TODO refactor spaghetti
     public ResponseEntity<String> uploadImage(Principal principal, MultipartFile file) throws IOException {
         if (!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/png")) {
-            return ResponseEntity.unprocessableEntity().body("Bad file type!");
+            return ResponseEntity.status(415).body("Bad file type!");
         }
         Long uploaderId = userService.getUser(principal).getId();
         String fileExtMIME = file.getContentType();
@@ -54,7 +54,12 @@ public class ImageService {
                 Scalr.Mode.AUTOMATIC,
                 128,
                 128);
-        ImageIO.write(thumbnailBufferedImage, "jpg", new File("imagerepository" + File.separator + "thumbnails" + File.separator + newEntity.getId()));
+        try {
+            ImageIO.write(thumbnailBufferedImage, "jpg", new File("imagerepository" + File.separator + "thumbnails" + File.separator + newEntity.getId()));
+        } catch (IIOException e) {
+            imageRepository.delete(newEntity);
+            throw e;
+        }
         bufferedImage.flush();
         thumbnailBufferedImage.flush();
 
@@ -62,8 +67,16 @@ public class ImageService {
 
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, Paths.get("imagerepository", String.valueOf(newEntity.getId()) + fileExt), StandardCopyOption.REPLACE_EXISTING);
-            return ResponseEntity.ok().body("Image uploaded!");
+            return ResponseEntity.ok().body("/entry/" + String.valueOf(newEntity.getId()));
         }
+    }
+
+    public ImageInfoDTO getThumbnail(String id) {
+        Image imageInfo = imageRepository.getThumbnail(Integer.parseInt(id));
+        if (imageInfo == null) {
+            return null;
+        }
+        return new ImageInfoDTO(imageInfo.getId(), imageInfo.getId() + mimeTypeToExtension(imageInfo.getFileExtension()));
     }
 
     public ImageInfoDTO getNextThumbnail(String id) {
@@ -77,6 +90,10 @@ public class ImageService {
     public ImageInfoDTO getNewestThumbnail() {
         Image imageInfo = imageRepository.getFirstThumb();
         return new ImageInfoDTO(imageInfo.getId(), imageInfo.getId() + mimeTypeToExtension(imageInfo.getFileExtension()));
+    }
+
+    public boolean imageExists(long id) {
+        return imageRepository.existsById(id);
     }
 
     public Integer getUserUploadCount(String username) {

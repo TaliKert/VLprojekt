@@ -6,10 +6,53 @@
 .navbar {
     background-color: #0c0c0c;
     opacity: 0.9;
+    font-family: "Roboto", monospace;
+}
+
+#language_dropdown {
+    text-align: center;
+}
+
+.nav-item {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    text-align: center;
+}
+
+.dropdown-toggle {
+    height: 100%;
+}
+
+.dropdown-toggle::after{
+    display: none;
 }
 
 nav {
     margin: auto;
+    background-color: rgba(238, 242, 242, 0.85);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.navbar-toggler {
+    display: table;
+}
+
+.navbar-toggler-icon {
+    position: relative;
+    color: #475662;
+    display: table-cell;
+    vertical-align: middle;
+    -webkit-transition: all 0.3s cubic-bezier(0.57, -0.6, 0.61, 1.02);
+    -moz-transition: all 0.3s cubic-bezier(0.57, -0.6, 0.61, 1.02);
+    -o-transition: all 0.3s cubic-bezier(0.57, -0.6, 0.61, 1.02);
+    -ms-transition: all 0.3s cubic-bezier(0.57, -0.6, 0.61, 1.02);
+    transition: all 0.3s cubic-bezier(0.57, -0.6, 0.61, 1.02);
+}
+
+
+.rotateButton-active {
+    transform: rotate(-90deg);
 }
 
 #uLink {

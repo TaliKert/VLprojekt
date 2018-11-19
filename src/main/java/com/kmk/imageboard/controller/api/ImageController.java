@@ -49,5 +49,8 @@ public class ImageController {
         return nextThumbnail;
     }
 
-
+    @GetMapping(value = "/thumb/exact/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ImageInfoDTO getThumbnailData(HttpServletResponse response, @PathVariable String id) {
+        return imageService.getThumbnail(id);
+    }
 }

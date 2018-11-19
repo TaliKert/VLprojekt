@@ -5,36 +5,45 @@
     <th:block th:include="fragments/head"/>
 
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/upload.css">
     <link rel="stylesheet" type="text/css" href="/css/help-tip.css"/>
+    <script src="/js/index.js"></script>
+    <script src="/js/upload.js"></script>
     <title th:text="#{uploadFooter}"></title>
-
-    <!-- <script src="/js/index.js"></script> -->
 </head>
 
 <body>
 <div id="toiletpaper">
     <th:block th:include="fragments/navbar"/>
-    <div class="container">
-        <div class="row">
-
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <form enctype="multipart/form-data" th:action="@{/upload}" th:method="POST">
-                    <label th:text="#{uploadImg}" for="image-file"></label>
-                        <input id="image-file" type="file" name="file"/>
-                        <button type="submit"
-                                class="btn btn-primary btn-lg" th:text="#{upload}">
-                        </button>
-                        <div class="help-tip">
-                            <p th:text="#{helpUploadingPictures}"></p>
-                        </div>
-                </form>
+    <div class="container" id="formContainer">
+        <form enctype="multipart/form-data" th:action="@{/upload}" th:method="POST">
+            <div class="row">
+                <div class="col">
+                    <label class="display-4" th:text="#{uploadImg}" for="image-file"></label>
+                </div>
             </div>
-        </div>
-        <div class="col-md">
-
-        </div>
+            <div class="row">
+                <div class="col">
+                    <input id="image-file" type="file" name="file"/>
+                </div>
+                <div class="col d-flex justify-content-end">
+                    <button type="submit"
+                            class="btn btn-primary btn-lg" id="uploadSubmitButton" th:text="#{upload}">
+                    </button>
+                    <div class="help-tip">
+                        <p th:text="#{helpUploadingPictures}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <span class="errorMsgBadFile" th:text="#{errorBadFile}"></span>
+                    <span class="errorMsgTooBig" th:text="#{errorSize}"></span>
+                    <span class="errorMsg" th:text="#{errorElse}"></span>
+                    <a href="/" class="successMsg" th:text="#{uploadSuccess}"></a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <th:block th:include="fragments/footer"/>

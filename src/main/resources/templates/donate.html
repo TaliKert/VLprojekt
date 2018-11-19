@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html th:lang="#{language_code}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="fragments/head"/>
+    <link rel="stylesheet" type="text/css" href="/css/donate.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/help-tip.css">
+    <title th:text="#{donate}"></title>
+</head>
+
+<body>
+
+<div id="toiletpaper">
+    <th:block th:include="fragments/navbar"/>
+    <div class="jumbotron jumbotron-fluid">
+        <form method="post" action="http://localhost/banklink/ipizza">
+            <input type="hidden" name="VK_SERVICE" th:value="${VK_SERVICE}" />
+            <input type="hidden" name="VK_VERSION" th:value="${VK_VERSION}" />
+            <input type="hidden" name="VK_SND_ID" th:value="${VK_SND_ID}" />
+            <input type="hidden" name="VK_STAMP" th:value="${VK_STAMP}" />
+            <input type="hidden" name="VK_AMOUNT" th:value="${VK_AMOUNT}" />
+            <input type="hidden" name="VK_CURR" th:value="${VK_CURR}" />
+            <input type="hidden" name="VK_ACC" th:value="${VK_ACC}" />
+            <input type="hidden" name="VK_NAME" th:value="${VK_NAME}" />
+            <input type="hidden" name="VK_REF" th:value="${VK_REF}" />
+            <input type="hidden" name="VK_LANG" th:value="${VK_LANG}" />
+            <input type="hidden" name="VK_MSG" th:value="${VK_MSG}" />
+            <input type="hidden" name="VK_RETURN" th:value="${VK_RETURN}" />
+            <input type="hidden" name="VK_CANCEL" th:value="${VK_CANCEL}" />
+            <input type="hidden" name="VK_DATETIME" th:value="${VK_DATETIME}" />
+            <input type="hidden" name="VK_ENCODING" th:value="${VK_ENCODING}" />
+            <input type="hidden" name="VK_MAC" th:value="${VK_MAC}" />
+            <div class="row">
+                <div class="col">
+                    <!--<label class="display-4" th:text="#{donateText}" for="donation-amount"></label>-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <!--<input id="donation-amount" type="number" name="donation-amount"/>-->
+                </div>
+                <div class="col d-flex justify-content-end">
+                    <button type="submit"
+                            class="btn btn-primary btn-lg" th:text="#{toBank}">
+                    </button>
+                    <div class="help-tip">
+                        <p th:text="#{helpDonate}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <span class="transactionCanceled" th:text="#{transactionCancel}"></span>
+                    <span class="transactionSuccess" th:text="#{transactionSuccess}"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<th:block th:include="fragments/footer"/>
+
+
+</body>
+</html>

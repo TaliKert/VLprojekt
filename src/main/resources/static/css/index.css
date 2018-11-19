@@ -1,6 +1,10 @@
 #toiletpaper {
     max-width: 1188px;
-    margin: auto;
+    margin: 58px auto auto;
+}
+
+nav {
+    max-width: 1188px;
 }
 
 .thumbcontainer {
@@ -30,43 +34,43 @@ body {
 
 
 @media (max-width: 1300px) {
-    #toiletpaper {
+    #toiletpaper, nav {
         max-width: 1056px
     }
 }
 
 @media (max-width: 1120px) {
-    #toiletpaper {
+    #toiletpaper, nav {
         max-width: 924px
     }
 }
 
 @media (max-width: 980px) {
-    #toiletpaper {
+    #toiletpaper, nav {
         max-width: 792px
     }
 }
 
 @media (max-width: 830px) {
-    #toiletpaper {
+    #toiletpaper, nav {
         max-width: 660px
     }
 }
 
 @media (max-width: 690px) {
-    #toiletpaper {
+    #toiletpaper, nav {
         max-width: 528px
     }
 }
 
 @media (max-width: 550px) {
-    #toiletpaper {
+    #toiletpaper, nav {
         max-width: 396px
     }
 }
 
 @media (max-width: 396px) {
-    #toiletpaper {
+    #toiletpaper, nav {
         max-width: 396px
     }
     .thumbImage {
