@@ -1,17 +1,17 @@
 # Here be your configuration for the banklink app
 # the following is sample information, everything is required
 
-#VK_SERVICE: 1011
-#VK_VERSION: 008
-#VK_SND_ID: uid39
-#VK_STAMP: 12345
-#VK_AMOUNT: 150
-#VK_CURR: EUR
-#VK_ACC: EE871600161234567892
-#VK_NAME: KMK
-#VK_REF: 1234561
-#VK_LANG: EST
-#VK_MSG: Torso Tiger
-#VK_RETURN: http://localhost:8080/donate?payment_action=success
-#VK_CANCEL: http://localhost:8080/donate?payment_action=cancel
-#VK_ENCODING: utf-8
+VK_SERVICE: 1011
+VK_VERSION: 008
+VK_SND_ID: uid39
+VK_STAMP: 12345
+VK_AMOUNT: 150
+VK_CURR: EUR
+VK_ACC: EE871600161234567892
+VK_NAME: KMK
+VK_REF: 1234561
+VK_LANG: EST
+VK_MSG: Torso Tiger
+VK_RETURN: http://localhost:8080/donate?payment_action=success
+VK_CANCEL: http://localhost:8080/donate?payment_action=cancel
+VK_ENCODING: utf-8
