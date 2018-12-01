@@ -27,6 +27,11 @@ nav {
     width: 100%;
 }
 
+body {
+    background-color: #1c1c1c;
+    color : #cccccc;
+}
+
 
 @media (max-width: 1300px) {
     #toiletpaper, nav {

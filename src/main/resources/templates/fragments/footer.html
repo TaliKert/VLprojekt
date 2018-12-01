@@ -1,13 +1,29 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:remove="tag">
-
-<footer class="fixed-sidebar-left fixed-bottom">
-    <div>
-        <a href="/" th:text="#{homepage}"></a>
-        <a href="/map" th:text="#{about}"></a>
-        <a href="/statistics" th:text="#{statistics}"></a>
-        <a href="/upload" th:text="#{uploadFooter}"></a>
-        <a href="/sitemap" th:text="#{sitemap}"></a>
+<head>
+<link rel="stylesheet" type="text/css" href="/css/footer.css"/>
+</head>
+<div id="footer-links" class="fixed-sidebar-left fixed-bottom">
+    <div id="footer-container" class="container">
+        <div class="row">
+            <div class="col md4">
+            <a href="/" th:text="#{homepage}"></a>
+            </div>
+            <div class="col md4">
+            <a href="/map" th:text="#{about}"></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col md4">
+                <a href="/statistics" th:text="#{statistics}"></a>
+            </div>
+            <div class="col md4">
+            <a href="/upload" th:text="#{uploadFooter}"></a>
+            </div>
+            <div class="col md4">
+            <a href="/sitemap" th:text="#{sitemap}"></a>
+            </div>
+        </div>
     </div>
-</footer>
+</div>
 </html>

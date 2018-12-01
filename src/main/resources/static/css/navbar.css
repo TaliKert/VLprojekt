@@ -1,4 +1,11 @@
 .navbar-brand {
+    font-family: "Courier New", serif;
+    color : #f7f7f7;
+}
+
+.navbar {
+    background-color: #0c0c0c;
+    opacity: 0.9;
     font-family: "Roboto", monospace;
 }
 

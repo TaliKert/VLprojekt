@@ -1,0 +1,20 @@
+#footer-links a {
+    font-family: "Courier New", serif;
+    font-size: 12px;
+    color : #cccccc;
+}
+
+#footer-links a:hover {
+    font-family: "Courier New", serif;
+    font-weight: bold;
+    color : #FFFFFF;
+    text-decoration: none;
+}
+
+#footer-container {
+    position: relative;
+    float: left;
+    left: 2%;
+    bottom: 12%;
+    width: 20%;
+}
