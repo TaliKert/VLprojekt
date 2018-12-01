@@ -3,17 +3,15 @@ package com.kmk.imageboard.controller;
 import com.kmk.imageboard.service.BankService;
 import com.kmk.imageboard.service.ImageService;
 import com.kmk.imageboard.service.UserService;
-import org.bouncycastle.jcajce.provider.asymmetric.RSA;
-import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import sun.security.rsa.RSAPadding;
-import sun.security.ssl.RSASignature;
 
 import java.security.Principal;
-import java.security.Signature;
+import java.security.PublicKey;
 
 @Controller
 public class IndexController {
@@ -125,7 +123,7 @@ public class IndexController {
             }
             model.addAttribute("username", userService.getUser(principal).getUsername());
         }
-        model.addAttribute("VK_MAC", bankService.sign(bankService.generateData(), bankService.privateKeyFromString()));
+        model.addAttribute("VK_MAC", bankService.sign(bankService.generateServerSideData(), bankService.privateKeyFromString()));
         model.addAttribute("VK_SERVICE", bankService.getVK_SERVICE());
         model.addAttribute("VK_VERSION", bankService.getVK_VERSION());
         model.addAttribute("VK_SND_ID", bankService.getVK_SND_ID());
@@ -145,13 +143,39 @@ public class IndexController {
         return "donate";
     }
 
-    @PostMapping("/donate")
-    public String donateRedir(Model model, Principal principal) throws Exception {
+    @PostMapping(value = "/donate", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String donateRedir(Model model, Principal principal,
+                              @RequestParam(value = "payment_action") String action,
+                              @RequestBody MultiValueMap<String, String> formData) throws Exception {
         if (principal != null) {
             if (userService.getUser(principal) == null) {
                 return "redirect:/register";
             }
             model.addAttribute("username", userService.getUser(principal).getUsername());
+        }
+        if (action.equals("success")) {
+            PublicKey publicKey = bankService.publicKeyFromCertificate();
+            String encodedResponse = bankService.generateData(
+                    formData.getFirst("VK_SERVICE"),
+                    formData.getFirst("VK_VERSION"),
+                    formData.getFirst("VK_SND_ID"),
+                    formData.getFirst("VK_REC_ID"),
+                    formData.getFirst("VK_STAMP"),
+                    formData.getFirst("VK_T_NO"),
+                    formData.getFirst("VK_AMOUNT"),
+                    formData.getFirst("VK_CURR"),
+                    formData.getFirst("VK_REC_ACC"),
+                    formData.getFirst("VK_REC_NAME"),
+                    formData.getFirst("VK_SND_ACC"),
+                    formData.getFirst("VK_SND_NAME"),
+                    formData.getFirst("VK_REF"),
+                    formData.getFirst("VK_MSG"),
+                    formData.getFirst("VK_T_DATETIME")
+            );
+            bankService.verifyResponse(publicKey, formData.getFirst("VK_MAC"), encodedResponse);
+            model.addAttribute("isPaymentConfirmed", true);
+        } else if (action.equals("cancel")) {
+            model.addAttribute("isPaymentCancelled", true);
         }
         return "donate";
     }

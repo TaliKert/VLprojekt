@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.Signature;
+import java.security.*;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -52,8 +54,6 @@ public class BankService {
     @Value("${VK_ENCODING}")
     private String VK_ENCODING;
 
-    private String VK_DATETIME;
-
     public static String padLeft(String s, int n) {
         return StringUtils.leftPad(s, n, '0');
     }
@@ -65,41 +65,31 @@ public class BankService {
         return df.format(new Date());
     }
 
-    public String generateData() {
-//        String VK_DATETIME = "2018-11-18T19:37:16+0000";
-        VK_DATETIME = currentISODate();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(padLeft(String.valueOf(VK_SERVICE.length()), 3));
-        sb.append(VK_SERVICE);
-        sb.append(padLeft(String.valueOf(VK_VERSION.length()), 3));
-        sb.append(VK_VERSION);
-        sb.append(padLeft(String.valueOf(VK_SND_ID.length()), 3));
-        sb.append(VK_SND_ID);
-        sb.append(padLeft(String.valueOf(VK_STAMP.length()), 3));
-        sb.append(VK_STAMP);
-        sb.append(padLeft(String.valueOf(VK_AMOUNT.length()), 3));
-        sb.append(VK_AMOUNT);
-        sb.append(padLeft(String.valueOf(VK_CURR.length()), 3));
-        sb.append(VK_CURR);
-        sb.append(padLeft(String.valueOf(VK_ACC.length()), 3));
-        sb.append(VK_ACC);
-        sb.append(padLeft(String.valueOf(VK_NAME.length()), 3));
-        sb.append(VK_NAME);
-        sb.append(padLeft(String.valueOf(VK_REF.length()), 3));
-        sb.append(VK_REF);
-        sb.append(padLeft(String.valueOf(VK_MSG.length()), 3));
-        sb.append(VK_MSG);
-        sb.append(padLeft(String.valueOf(VK_RETURN.length()), 3));
-        sb.append(VK_RETURN);
-        sb.append(padLeft(String.valueOf(VK_CANCEL.length()), 3));
-        sb.append(VK_CANCEL);
-        sb.append(padLeft(String.valueOf(VK_DATETIME.length()), 3));
-        sb.append(VK_DATETIME);
-        System.out.println(sb.toString());
-        return sb.toString();
+    public String generateServerSideData() {
+        return generateData(VK_SERVICE,
+                VK_VERSION,
+                VK_SND_ID,
+                VK_STAMP,
+                VK_AMOUNT,
+                VK_CURR,
+                VK_ACC,
+                VK_NAME,
+                VK_REF,
+                VK_MSG,
+                VK_RETURN,
+                VK_CANCEL,
+                currentISODate());
     }
 
+    public String generateData(String... strings) {
+        StringBuilder sb = new StringBuilder();
+        for (String string : strings) {
+            sb.append(padLeft(String.valueOf(string.length()), 3));
+            sb.append(string);
+        }
+        return sb.toString();
+
+    }
 
 
     public String sign(String plainText, PrivateKey privateKey) throws Exception {
@@ -110,6 +100,13 @@ public class BankService {
         byte[] signature = privateSignature.sign();
 
         return Base64.getEncoder().encodeToString(signature);
+    }
+
+    public boolean verifyResponse(PublicKey publicKey, String signedMessage, String message) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+        Signature signature = Signature.getInstance("SHA1withRSA");
+        signature.initVerify(publicKey);
+        signature.update(message.getBytes());
+        return signature.verify(Base64.getDecoder().decode(signedMessage.getBytes()));
     }
 
 
@@ -123,6 +120,14 @@ public class BankService {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyContent));
         return kf.generatePrivate(keySpecPKCS8);
+    }
+
+    public PublicKey publicKeyFromCertificate() throws Exception {
+
+        FileInputStream fin = new FileInputStream(new File(ClassLoader.getSystemResource("bank_cert.pem").toURI()));
+        CertificateFactory f = CertificateFactory.getInstance("X.509");
+        X509Certificate certificate = (X509Certificate) f.generateCertificate(fin);
+        return certificate.getPublicKey();
     }
 
     public String getVK_SERVICE() {
@@ -182,6 +187,6 @@ public class BankService {
     }
 
     public String getVK_DATETIME() {
-        return VK_DATETIME;
+        return currentISODate();
     }
 }
