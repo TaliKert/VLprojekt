@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByGoogleId(@Param("googleId") String googleId);
 
     User findByUsername(String username);
+
+    User findById(long id);
 }

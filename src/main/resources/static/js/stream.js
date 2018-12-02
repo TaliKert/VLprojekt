@@ -1,5 +1,82 @@
 // ORIGINAL CODE, DO NOT STEAL
 
+$(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content')
+        }
+    });
+
+    connect();
+    window.onbeforeunload = function () {
+        disconnect();
+    };
+
+    window.currentBreakPointIndex = determineCurrentBreakPointIndex();
+
+    if (window.location.pathname.split("/").slice(-1)[0] !== "") {
+        window.lastThumbID = window.location.pathname.split("/").slice(-1)[0];
+        window.activeImageElementId = "t" + window.lastThumbID;
+        $.getThumbnail(window.lastThumbID).done(function () {
+            refreshContainerPosition(document.getElementById(activeImageElementId));
+        })
+    }
+
+    $.getThumbnailAfter(lastThumbID).done(function () {
+        appendNewElementsUntilScreenFull();
+    });
+
+    $(window).scroll(function () {
+        if (!scrollUpdateInProgress) appendNewElementsUntilScreenFull();
+    });
+
+    $('#ratingUp').click(function () {
+        $.ajax({
+            url: '/image/' + activeImageElementId.substr(1) + '/rate/true',
+            type: 'post'
+        }).done(function () {
+            $.ajax({
+                url: '/image/' + activeImageElementId.substr(1) + '/info',
+                type: 'get'
+            }).done(function (data) {
+                updateRating(data.rating)
+            });
+        })
+    });
+
+    $('#ratingDown').click(function () {
+        $.ajax({
+            url: '/image/' + activeImageElementId.substr(1) + '/rate/false',
+            type: 'post'
+        }).done(function () {
+            $.ajax({
+                url: '/image/' + activeImageElementId.substr(1) + '/info',
+                type: 'get'
+            }).done(function (data) {
+                updateRating(data.rating)
+            });
+        })
+    });
+
+    $('#submitCommentButton').click(function () {
+        $.ajax({
+            url: '/image/' + activeImageElementId.substr(1) + '/comment',
+            type: 'post',
+            data: {
+                'authorName': '',
+                'text': $('#commentTextInput').val()
+            }
+        }).done(function () {
+            $.ajax({
+                url: '/image/' + activeImageElementId.substr(1) + '/info',
+                type: 'get'
+            }).done(function (data) {
+                updateComments(data.comments)
+            });
+        });
+    });
+});
+
 var thumbnails = [];
 var firstThumbID;
 var lastThumbID;
@@ -116,9 +193,33 @@ function refreshContainerPosition(target) {
         .css('display', 'inline-block');
     $('#itemContainer > img')
         .attr('src', target.pathname);
+    $.ajax({
+        url: '/image/' + target.id.substr(1) + '/info',
+        type: 'get'
+    }).done(function (data) {
+        updateRating(data.rating);
+        $('#infoBlockUploaderUsername').html(data.authorName).attr('href', '/u/' + data.authorName);
+        updateComments(data.comments);
+    });
     // $('html, body').animate({
     //     scrollTop: $("#itemContainer").offset().top - 58
     // },1000);
+}
+
+function updateRating(rating) {
+    $('#ratingScore').html(rating);
+}
+
+function updateComments(comments) {
+    $('#commentBlock').empty();
+    for (var i = 0; i < comments.length; i++) {
+        var comment = '<div>' +
+            '<div><a href="/u/' + comments[i].authorName + '">' + comments[i].authorName + '</a></div>' +
+            '<div>' + comments[i].text + '</div>' +
+            '<hr>' +
+            '</div>';
+        $(comment).appendTo($('#commentBlock'));
+    }
 }
 
 function determineCurrentBreakPointIndex() {
@@ -142,6 +243,21 @@ $(window).resize(function () {
     }
 });
 
+function appendNewElementsUntilScreenFull() {
+    scrollUpdateInProgress = true;
+    if ($(window).scrollTop() + $(window).height() + 200 > $("span.thumbRow:last").offset().top) {
+        if (lastImageReached) {
+            scrollUpdateInProgress = false;
+            return;
+        }
+        $.getThumbnailAfter(lastThumbID).done(function () {
+            appendNewElementsUntilScreenFull()
+        });
+    } else {
+        scrollUpdateInProgress = false;
+    }
+}
+
 // WEBSOCKET
 
 function connect() {
@@ -163,52 +279,3 @@ function disconnect() {
         stompClient.disconnect();
     }
 }
-
-function appendNewElementsUntilScreenFull() {
-    scrollUpdateInProgress = true;
-    if ($(window).scrollTop() + $(window).height() + 200 > $("span.thumbRow:last").offset().top) {
-        if (lastImageReached) {
-            scrollUpdateInProgress = false;
-            return;
-        }
-        $.getThumbnailAfter(lastThumbID).done(function () {
-            appendNewElementsUntilScreenFull()
-        });
-    } else {
-        scrollUpdateInProgress = false;
-    }
-}
-
-$(document).ready(function () {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content')
-        }
-    });
-
-    connect();
-    window.onbeforeunload = function () {
-        disconnect();
-    };
-
-    window.currentBreakPointIndex = determineCurrentBreakPointIndex();
-
-    if (window.location.pathname.split("/").slice(-1)[0] !== "") {
-        window.lastThumbID = window.location.pathname.split("/").slice(-1)[0];
-        window.activeImageElementId = "t" + window.lastThumbID;
-        $.getThumbnail(window.lastThumbID).done(function () {
-            refreshContainerPosition(document.getElementById(activeImageElementId));
-        })
-    }
-
-    $.getThumbnailAfter(lastThumbID).done(function () {
-        appendNewElementsUntilScreenFull();
-    });
-
-    $(window).scroll(function () {
-        if (scrollUpdateInProgress) return;
-        else appendNewElementsUntilScreenFull();
-    })
-
-
-});

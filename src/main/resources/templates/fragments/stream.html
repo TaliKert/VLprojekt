@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org" th:remove="tag">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:remove="tag">
 <div id="stream">
     <!--Siia sisse luuakse 'span' elemente classiga 'thumbRow', nende sisse pannakse vastavalt akna
         laiusele 'a' elemente, mille klass on 'thumbcontainer'-->
@@ -6,6 +6,29 @@
 
 <div id="itemContainer">
     <img id="template" src="/" alt="Template element"/>
+    <div id="itemControls">
+        <div id="ratingBlock">
+            <button class="controlButton ratingButton" id="ratingUp">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            <span id="ratingScore">100</span>
+            <button class="controlButton ratingButton" id="ratingDown">
+                <i class="fas fa-arrow-down"></i>
+            </button>
+        </div>
+        <div id="infoBlock">
+            <span th:text="#{uploadedBy}"></span>
+            <a href="/" id="infoBlockUploaderUsername">mock</a>
+        </div>
+        <div id="commentBlock">
+        </div>
+        <div sec:authorize="isAuthenticated()" id="newCommentForm">
+            <textarea name="comment" th:placeholder="#{inputAComment}" id="commentTextInput" cols="30" rows="4"></textarea>
+            <button class="controlButton" id="submitCommentButton">
+                <i class="fas fa-comment-alt"></i>
+            </button>
+        </div>
+    </div>
 </div>
 
 

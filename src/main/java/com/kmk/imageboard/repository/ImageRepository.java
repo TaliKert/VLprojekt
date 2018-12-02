@@ -21,4 +21,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM images INNER JOIN users ON users.id = images.uploader_id WHERE username = :uname")
     Integer getUploaderUploadCount(@Param("uname") String username);
 
+    Image findImageById(long id);
+
 }

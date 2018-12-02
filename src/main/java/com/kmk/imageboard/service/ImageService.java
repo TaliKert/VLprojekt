@@ -1,6 +1,8 @@
 package com.kmk.imageboard.service;
 
+import com.kmk.imageboard.model.DTO.CommentDTO;
 import com.kmk.imageboard.model.DTO.ImageInfoDTO;
+import com.kmk.imageboard.model.DTO.SocialDTO;
 import com.kmk.imageboard.model.Image;
 import com.kmk.imageboard.repository.ImageRepository;
 import org.imgscalr.Scalr;
@@ -22,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,9 +37,12 @@ public class ImageService {
     UserService userService;
 
     @Autowired
+    CommentRatingService commentRatingService;
+
+    @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-//    TODO refactor spaghetti
+    //    TODO refactor spaghetti
     public ResponseEntity<String> uploadImage(Principal principal, MultipartFile file) throws IOException {
         if (!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/png")) {
             return ResponseEntity.status(415).body("Bad file type!");
@@ -92,6 +98,10 @@ public class ImageService {
         return new ImageInfoDTO(imageInfo.getId(), imageInfo.getId() + mimeTypeToExtension(imageInfo.getFileExtension()));
     }
 
+    public Image getImageById(long id) {
+        return imageRepository.findImageById(id);
+    }
+
     public boolean imageExists(long id) {
         return imageRepository.existsById(id);
     }
@@ -117,5 +127,28 @@ public class ImageService {
 
     private String mimeTypeToExtension(String mime) {
         return mime.equals("image/png") ? ".png" : ".jpg";
+    }
+
+    public SocialDTO getSocialInfo(Principal principal, long imageId) {
+
+        Optional<Image> imageOptional = imageRepository.findById(imageId);
+        Image image;
+        if (imageOptional.isPresent()) image = imageOptional.get();
+        else throw new RuntimeException("Image not found");
+
+        boolean isAuthor = false;
+        Boolean userRating = null;
+        if (principal != null) {
+            userRating = commentRatingService.getUserRating(userService.getUser(principal), imageRepository.findImageById(imageId));
+            isAuthor = image.getUploaderId() == userService.getUser(principal).getId();
+        }
+
+        String authorName = userService.getUser(image.getUploaderId()).getUsername();
+
+        long rating = commentRatingService.getRating(image);
+
+        List<CommentDTO> commentDTOs = commentRatingService.getCommentDTOs(image);
+
+        return new SocialDTO(isAuthor, authorName, rating, userRating, commentDTOs);
     }
 }

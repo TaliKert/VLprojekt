@@ -1,6 +1,7 @@
 package com.kmk.imageboard.controller.api;
 
 import com.kmk.imageboard.model.DTO.ImageInfoDTO;
+import com.kmk.imageboard.model.DTO.SocialDTO;
 import com.kmk.imageboard.service.ImageService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.security.Principal;
 
 @RestController
 public class ImageController {
@@ -52,5 +54,10 @@ public class ImageController {
     @GetMapping(value = "/thumb/exact/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ImageInfoDTO getThumbnailData(HttpServletResponse response, @PathVariable String id) {
         return imageService.getThumbnail(id);
+    }
+
+    @GetMapping(value = "/image/{id}/info")
+    public SocialDTO getSocialInfo(Principal principal, @PathVariable String id) {
+        return imageService.getSocialInfo(principal, Long.parseLong(id));
     }
 }
