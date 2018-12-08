@@ -123,7 +123,7 @@ public class IndexController {
             }
             model.addAttribute("username", userService.getUser(principal).getUsername());
         }
-        model.addAttribute("VK_MAC", bankService.sign(bankService.generateServerSideData(), bankService.privateKeyFromString()));
+        model.addAttribute("VK_MAC", bankService.sign(bankService.generateServerSideData(), bankService.privateKeyFromResources()));
         model.addAttribute("VK_SERVICE", bankService.getVK_SERVICE());
         model.addAttribute("VK_VERSION", bankService.getVK_VERSION());
         model.addAttribute("VK_SND_ID", bankService.getVK_SND_ID());

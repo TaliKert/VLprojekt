@@ -1,18 +1,15 @@
 package com.kmk.imageboard.service;
 
+import net.oauth.signature.pem.PEMReader;
+import net.oauth.signature.pem.PKCS1EncodedKeySpec;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -88,7 +85,6 @@ public class BankService {
             sb.append(string);
         }
         return sb.toString();
-
     }
 
 
@@ -96,9 +92,7 @@ public class BankService {
         Signature privateSignature = Signature.getInstance("SHA1withRSA");
         privateSignature.initSign(privateKey);
         privateSignature.update(plainText.getBytes(UTF_8));
-
         byte[] signature = privateSignature.sign();
-
         return Base64.getEncoder().encodeToString(signature);
     }
 
@@ -110,23 +104,16 @@ public class BankService {
     }
 
 
-    public PrivateKey privateKeyFromString() throws Exception {
-
-        // use "openssl pkcs8 -topk8 -inform PEM -outform PEM -in priv1.pem -out priv8.pem -nocrypt" to make pangalink.net pkcs1 -> pkcs8
-
-        String privateKeyContent = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("priv8.pem").toURI())));
-        privateKeyContent = privateKeyContent.replaceAll("\\n", "").replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
-
+    public PrivateKey privateKeyFromResources() throws Exception {
+        PEMReader reader = new PEMReader(ClassLoader.getSystemResourceAsStream("priv1.pem"));
+        PKCS1EncodedKeySpec keySpecPKCS1 = new PKCS1EncodedKeySpec(reader.getDerBytes());
         KeyFactory kf = KeyFactory.getInstance("RSA");
-        PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyContent));
-        return kf.generatePrivate(keySpecPKCS8);
+        return kf.generatePrivate(keySpecPKCS1.getKeySpec());
     }
 
     public PublicKey publicKeyFromCertificate() throws Exception {
-
-        FileInputStream fin = new FileInputStream(new File(ClassLoader.getSystemResource("bank_cert.pem").toURI()));
         CertificateFactory f = CertificateFactory.getInstance("X.509");
-        X509Certificate certificate = (X509Certificate) f.generateCertificate(fin);
+        X509Certificate certificate = (X509Certificate) f.generateCertificate(ClassLoader.getSystemResourceAsStream("bank_cert.pem"));
         return certificate.getPublicKey();
     }
 
