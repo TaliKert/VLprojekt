@@ -105,7 +105,7 @@ public class BankService {
 
 
     public PrivateKey privateKeyFromResources() throws Exception {
-        PEMReader reader = new PEMReader(ClassLoader.getSystemResourceAsStream("priv1.pem"));
+        PEMReader reader = new PEMReader(ClassLoader.getSystemResourceAsStream("user_key.pem"));
         PKCS1EncodedKeySpec keySpecPKCS1 = new PKCS1EncodedKeySpec(reader.getDerBytes());
         KeyFactory kf = KeyFactory.getInstance("RSA");
         return kf.generatePrivate(keySpecPKCS1.getKeySpec());

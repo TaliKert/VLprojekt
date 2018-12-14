@@ -85,8 +85,16 @@ public class ImageService {
         return new ImageInfoDTO(imageInfo.getId(), imageInfo.getId() + mimeTypeToExtension(imageInfo.getFileExtension()));
     }
 
+    public ImageInfoDTO getPreviousThumbnail(String id) {
+        Image imageInfo = imageRepository.findFirstByIdGreaterThanOrderByIdDesc(Long.parseLong(id));
+        if (imageInfo == null) {
+            return null;
+        }
+        return new ImageInfoDTO(imageInfo.getId(), imageInfo.getId() + mimeTypeToExtension(imageInfo.getFileExtension()));
+    }
+
     public ImageInfoDTO getNextThumbnail(String id) {
-        Image imageInfo = imageRepository.getNextThumb(Integer.parseInt(id));
+        Image imageInfo = imageRepository.findFirstByIdLessThanOrderByIdDesc(Long.parseLong(id));
         if (imageInfo == null) {
             return null;
         }

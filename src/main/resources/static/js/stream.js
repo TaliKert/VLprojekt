@@ -75,6 +75,7 @@ $(document).ready(function () {
             });
         });
     });
+    $('head').append('<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">');
 });
 
 var thumbnails = [];
@@ -97,6 +98,7 @@ var scrollUpdateInProgress = false;
 
 
 function addNewThumbnailBefore() { // adding to before is more expensive than adding after, something to fix
+    console.log('appendedbefore');
     $('#stream').prepend(
         '<a class="thumbcontainer" href="/image/' + thumbnails[0].fileName + '">' +
         '<img src="' + '/thumb/' + thumbnails[0].id + '" />' +
@@ -213,12 +215,20 @@ function updateRating(rating) {
 function updateComments(comments) {
     $('#commentBlock').empty();
     for (var i = 0; i < comments.length; i++) {
-        var comment = '<div>' +
-            '<div><a href="/u/' + comments[i].authorName + '">' + comments[i].authorName + '</a></div>' +
-            '<div>' + comments[i].text + '</div>' +
-            '<hr>' +
-            '</div>';
-        $(comment).appendTo($('#commentBlock'));
+        var commentAuthorLink = document.createElement("a");
+        commentAuthorLink.innerText = comments[i].authorName;
+        commentAuthorLink.setAttribute('href', '/u/' + comments[i].authorName);
+
+        var commentText = document.createElement("div");
+        commentText.innerText = comments[i].text;
+
+        var comment = document.createElement("div");
+
+        $(comment)
+            .append(commentAuthorLink)
+            .append(commentText)
+            .append(document.createElement("hr"))
+            .appendTo($('#commentBlock'));
     }
 }
 

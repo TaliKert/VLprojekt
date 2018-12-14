@@ -38,6 +38,16 @@ public class ImageController {
         IOUtils.copy(in, response.getOutputStream());
     }
 
+    @GetMapping(value = "/thumb/before/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ImageInfoDTO getThumbnailDataBefore(HttpServletResponse response, @PathVariable String id) {
+        ImageInfoDTO previousThumbnail = imageService.getPreviousThumbnail(id);
+        if (previousThumbnail == null) {
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        }
+        return previousThumbnail;
+    }
+
+
     @GetMapping(value = "/thumb/after/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ImageInfoDTO getThumbnailDataAfter(HttpServletResponse response, @PathVariable String id) {
         if (id.equals("undefined") || id.equals("null")) {
