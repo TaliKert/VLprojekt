@@ -82,5 +82,3 @@ In order to use the donation feature, you must first
 * create a new "maksemeetod"
 * look at the example provided in the pangalink configuration page and fill your corresponding values in `src/main/resources/banklink.yml`. A mock example is provided in the repo.
 * Download the provided keys: `user_key.pem` and `bank_cert.pem` and put them in `src/main/resources`
-* cd to `src/main/resources` and use `openssl pkcs8 -topk8 -inform PEM -outform PEM -in user_key.pem -out priv8.pem -nocrypt` in order to convert the key to pkcs8 protocol ***LINUX ONLY***
-* delete `user_key.pem`
